@@ -1,0 +1,19 @@
+{
+  "name": "on36-ijs-amarobank",
+  "version": "1.0.0",
+  "description": "projeto bootcamp reprograma de banco comunitario",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elizapimentel/ON36-IJS-AMAROBANK.git"
+  },
+  "author": "Eliza Pimentel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elizapimentel/ON36-IJS-AMAROBANK/issues"
+  },
+  "homepage": "https://github.com/elizapimentel/ON36-IJS-AMAROBANK#readme"
+}
