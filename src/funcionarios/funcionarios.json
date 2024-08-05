@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "nomeFuncionario": "João da Silva",
+    "cargo": "Gerente",
+    "telefones": [
+      "(11) 9999-9999",
+      "(11) 9999-9999"
+    ]
+  },
+  {
+    "id": 3,
+    "telefones": [
+      "819999-8888",
+      "815555-3333"
+    ]
+  },
+  {
+    "id": 4,
+    "telefones": [
+      "819999-8888",
+      "815555-3333"
+    ]
+  },
+  {
+    "id": 5,
+    "nomeFuncionario": "Eliza",
+    "cargo": "Gerente",
+    "telefones": [
+      "(21) 8888-9999",
+      "(21) 8888-9999"
+    ],
+    "clientes": []
+  },
+  {
+    "id": 6,
+    "nomeFuncionario": "Joana da Silva",
+    "cargo": "Agente",
+    "telefones": [
+      "(21) 8888-9999",
+      "(21) 8888-9999"
+    ]
+  }
+]
