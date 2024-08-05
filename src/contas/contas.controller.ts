@@ -1,7 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ContasService } from './contas.service';
 import { CreateContaDto } from './dto/create-conta.dto';
 import { UpdateContaDto } from './dto/update-conta.dto';
+import {
+  Funcionario,
+  TipoCargo,
+} from 'src/funcionarios/entities/funcionario.entity';
 
 @Controller('contas')
 export class ContasController {
@@ -9,7 +21,13 @@ export class ContasController {
 
   @Post()
   criarConta(@Body() createContaDto: CreateContaDto) {
-    return this.contasService.criarConta(createContaDto);
+    const funcionario: Funcionario = {
+      id: 6,
+      nomeFuncionario: 'Nome',
+      cargo: TipoCargo.AGENTE,
+      telefones: ['123456789'],
+    };
+    return this.contasService.criarConta(funcionario, createContaDto);
   }
 
   @Get()
@@ -23,7 +41,10 @@ export class ContasController {
   }
 
   @Patch(':id')
-  atualizarConta(@Param('id') id: string, @Body() updateContaDto: UpdateContaDto) {
+  atualizarConta(
+    @Param('id') id: string,
+    @Body() updateContaDto: UpdateContaDto,
+  ) {
     return this.contasService.atualizarConta(+id, updateContaDto);
   }
 

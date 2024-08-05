@@ -3,9 +3,16 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { CreateContaDto } from './dto/create-conta.dto';
 import { UpdateContaDto } from './dto/update-conta.dto';
-import { Conta } from './entities/conta.entity'; 
-import { TipoTransacao, Transacao } from 'src/transacoes/entities/transacao.entity';
+import { Conta } from './entities/conta.entity';
+import {
+  TipoTransacao,
+  Transacao,
+} from 'src/transacoes/entities/transacao.entity';
 import { TransacoesService } from 'src/transacoes/transacoes.service';
+import {
+  Funcionario,
+  TipoCargo,
+} from 'src/funcionarios/entities/funcionario.entity';
 
 @Injectable()
 export class ContasService {
@@ -27,7 +34,10 @@ export class ContasService {
     fs.writeFileSync(this.filePath, JSON.stringify(contas, null, 2), 'utf8');
   }
 
-  criarConta(criarContaDto: CreateContaDto): Conta {
+  criarConta(funcionario: Funcionario, criarContaDto: CreateContaDto): Conta {
+    if (funcionario.cargo !== TipoCargo.GERENTE) {
+      throw new NotFoundException(`Funcionário não autorizado`);
+    }
     const contas = this.readContas();
     const novaConta: Conta = {
       id: this.idCounter++,
@@ -45,7 +55,7 @@ export class ContasService {
 
   findById(id: number): Conta {
     const contas = this.readContas();
-    const conta = contas.find(c => c.id === id);
+    const conta = contas.find((c) => c.id === id);
 
     if (!conta) {
       throw new NotFoundException(`Conta with ID ${id} not found`);
@@ -56,7 +66,7 @@ export class ContasService {
 
   atualizarConta(id: number, updateContaDto: UpdateContaDto): Conta {
     const contas = this.readContas();
-    const contaIndex = contas.findIndex(c => c.id === id);
+    const contaIndex = contas.findIndex((c) => c.id === id);
 
     if (contaIndex === -1) {
       throw new NotFoundException(`Conta with ID ${id} not found`);
@@ -70,7 +80,7 @@ export class ContasService {
 
   removerConta(id: number): void {
     const contas = this.readContas();
-    const updatedContas = contas.filter(c => c.id !== id);
+    const updatedContas = contas.filter((c) => c.id !== id);
 
     if (contas.length === updatedContas.length) {
       throw new NotFoundException(`Conta with ID ${id} not found`);
@@ -80,19 +90,23 @@ export class ContasService {
   }
 
   // Método para adicionar uma transação à conta
-  adicionarTransacao(id:number, numConta: number, valor: number, tipo: TipoTransacao): Transacao {
+  adicionarTransacao(
+    id: number,
+    numConta: number,
+    valor: number,
+    tipo: TipoTransacao,
+  ): Transacao {
     const conta = this.findById(id);
     if (!conta) {
       throw new NotFoundException(`Conta with ID ${id} not found`);
     }
 
-    // Aqui você deve ter o TransacoesService injetado para criar a transação
-    const novaTransacao = this.transacoesService.criarTransacao(numConta, valor, tipo);
-    
-    // Atualize a conta se necessário (ex.: adicionar saldo, etc.)
-    // Exemplo fictício:
-    // conta.saldo += type === TipoTransacao.CREDITO ? amount : -amount;
-    // this.update(contaId, conta);
+    // injetar TransacoesService para criar a transação
+    const novaTransacao = this.transacoesService.criarTransacao(
+      numConta,
+      valor,
+      tipo,
+    );
 
     return novaTransacao;
   }
