@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { FuncionariosController } from './funcionarios.controller';
-import { FuncionariosService } from './funcionarios.service';
+import { FuncionariosController } from './controller/funcionarios.controller';
+import { FuncionariosService } from './service/funcionarios.service';
+import { ClientesModule } from 'src/clientes/clientes.module';
 
 @Module({
-    controllers: [FuncionariosController],
-    providers: [FuncionariosService],
-    exports: [FuncionariosService]
+  imports: [ClientesModule],
+  controllers: [FuncionariosController],
+  providers: [FuncionariosService],
+  exports: [FuncionariosService],
 })
-export class FuncionariosModule {
-}
-
+export class FuncionariosModule {}
