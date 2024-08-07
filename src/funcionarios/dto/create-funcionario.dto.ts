@@ -1,16 +1,15 @@
-import { TipoCargo } from "../entities/funcionario.entity";
+import { TipoCargo } from '../entities/funcionario.entity';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateFuncionarioDto {
-    @IsNotEmpty()
-    @IsString()
-    readonly nomeFuncionario: string;
+  @IsNotEmpty()
+  @IsString()
+  readonly nomeFuncionario: string;
 
-    @IsNotEmpty()
-    @IsEnum(TipoCargo)
-    readonly cargo: TipoCargo;
+  @IsNotEmpty()
+  @IsEnum(TipoCargo)
+  readonly cargo: TipoCargo;
 
-    @IsNotEmpty()
-    readonly telefones: string[];
-
+  @IsNotEmpty()
+  readonly telefones: string[];
 }
