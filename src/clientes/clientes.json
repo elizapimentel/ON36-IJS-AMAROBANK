@@ -1,9 +1,9 @@
 [
   {
     "id": 1,
-    "nomeCompleto": "João da Silva",
-    "endereco": "Rua das flores, 0. Amaro Branco",
-    "telefone": "3030303030",
+    "nomeCompleto": "Pedro Paulo",
+    "endereco": "Rua das margaridas, 10. Amaro Branco",
+    "telefone": "40404010",
     "contas": [
       {
         "id": 1,
@@ -14,14 +14,6 @@
         "saldo": 2000
       }
     ],
-    "gerente": {
-      "id": 5,
-      "nomeFuncionario": "Eliza Pereira",
-      "cargo": "Gerente",
-      "telefones": [
-        "(21) 8888-9999", 
-        "(21) 8888-9999"
-        ]
-    }
+    "gerente": 6
   }
 ]
