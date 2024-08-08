@@ -1,15 +1,24 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ContasService } from 'src/contas/services/contas.service';
-import { TipoTransacao, Transacao } from '../entities/transacao.entity';
+import { Transacao } from '../entities/transacao.entity';
+import { TipoTransacao } from 'src/common/enums/tipo-.conta.enum';
 
 @Injectable()
 export class TransacoesService {
   private readonly filePath = path.resolve('src/transacoes/transacoes.json');
   private idCounter: number;
 
-  constructor(private readonly contasService: ContasService) {
+  constructor(
+    @Inject(forwardRef(() => ContasService))
+    private readonly contasService: ContasService,
+  ) {
     const transacoes = this.readTransacoes();
     this.idCounter =
       transacoes.length > 0 ? transacoes[transacoes.length - 1].id + 1 : 1;
@@ -50,5 +59,10 @@ export class TransacoesService {
     transacoes.push(novaTransacao);
     this.writeTransacoes(transacoes);
     return novaTransacao;
+  }
+
+  mostrartransacoesPorConta(numConta:number): Transacao[] {
+    const transacoes = this.readTransacoes();
+    return transacoes.filter((transacao) => transacao.numConta === numConta);
   }
 }
