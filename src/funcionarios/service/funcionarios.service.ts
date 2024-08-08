@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Funcionario, TipoCargo } from '../entities/funcionario.entity';
+import { Funcionario } from '../entities/funcionario.entity';
 import * as path from 'path';
 import * as fs from 'fs';
-import { Gerente } from '../entities/gerente.entity';
 import { CreateFuncionarioDto } from '../dto/create-funcionario.dto';
 import { UpdateFuncionarioDto } from '../dto/update-funcionario.dto';
-import { Agente } from '../entities/agente.entity';
+import { TipoCargo } from 'src/common/enums/tipo-.conta.enum';
+import { FuncionariosFactory } from 'src/factories/funcionarios.factory';
 
 @Injectable()
 export class FuncionariosService {
@@ -36,27 +36,29 @@ export class FuncionariosService {
     );
   }
 
-  //create
   cadastrarFuncionario(criarFuncionario: CreateFuncionarioDto): Funcionario {
     const funcionarios = this.readFuncionarios();
     let novoFuncionario: Funcionario;
 
     if (criarFuncionario.cargo === TipoCargo.GERENTE) {
-      novoFuncionario = new Gerente(
+      novoFuncionario = FuncionariosFactory.criarFuncionario(
+        TipoCargo.GERENTE,
         this.idCounter++,
         criarFuncionario.nomeFuncionario,
-        TipoCargo.GERENTE,
         criarFuncionario.telefones,
         [],
       );
-    } else if (criarFuncionario.cargo === TipoCargo.AGENTE) {
-      novoFuncionario = new Agente(
+    } 
+    
+    if (criarFuncionario.cargo === TipoCargo.AGENTE) {
+      novoFuncionario = FuncionariosFactory.criarFuncionario(
+        TipoCargo.AGENTE,
         this.idCounter++,
         criarFuncionario.nomeFuncionario,
-        criarFuncionario.cargo,
         criarFuncionario.telefones,
       );
     }
+    
     funcionarios.push(novoFuncionario);
     this.writeFuncionarios(funcionarios);
     return novoFuncionario;
