@@ -3,7 +3,7 @@
     "id": 1,
     "numeroConta": 16515658,
     "tipoConta": "CORRENTE",
-    "saldo": 500,
+    "saldo": 450,
     "transacoes": [
       {
         "data": "2021-08-01",
@@ -21,7 +21,7 @@
     "id": 2,
     "numeroConta": 16515658,
     "tipoConta": "POUPANÇA",
-    "saldo": 1000,
+    "saldo": 850,
     "transacoes": [
       {
         "data": "2021-08-01",

@@ -1,34 +1,30 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
-import { CreateContaDto } from '../dto/create/create-conta.dto';
-import { UpdateContaDto } from '../dto/update/update-conta.dto';
 import { TransacoesService } from 'src/transacoes/service/transacoes.service';
-import {
-  Funcionario,
-  TipoCargo,
-} from 'src/funcionarios/entities/funcionario.entity';
+import { Funcionario } from 'src/funcionarios/entities/funcionario.entity';
 import { Contas } from '../entities/conta.entity';
-import { TipoTransacao } from 'src/transacoes/entities/transacao.entity';
-import { ContaCorrente } from '../entities/conta-corrente.entity';
 import { CreateContaCorrenteDto } from '../dto/create/create-conta-corrente.dto';
-import { ContaPoupanca } from '../entities/conta-poupanca.entity';
 import { CreateContaPoupancaDto } from '../dto/create/create-conta-poupana.dto';
-import { UpdateContaCorrenteDto } from '../dto/update/update-conta-corrente.dto';
-import { UpdateContaPoupancaDto } from '../dto/update/update-conta-poupanca.dto';
 import { log } from 'console';
+import { ContasFactory } from 'src/factories/contas.factory';
+import { TipoCargo, TipoConta, TipoTransacao } from 'src/common/enums/tipo-.conta.enum';
 
 @Injectable()
 export class ContasService {
   private readonly filePath = path.resolve('src/contas/contas.json');
   private idCounter: number;
-  transacoesService: TransacoesService;
 
-  constructor() {
+  constructor(
+    @Inject(forwardRef(() => TransacoesService))
+    private readonly transacoesService: TransacoesService,
+  ) {
     const contas = this.readContas();
     this.idCounter = contas.length > 0 ? contas[contas.length - 1].id + 1 : 1;
   }
@@ -42,35 +38,47 @@ export class ContasService {
     fs.writeFileSync(this.filePath, JSON.stringify(contas, null, 2), 'utf8');
   }
 
-  abrirConta(funcionario: Funcionario, criarContaDto: CreateContaDto): Contas {
-    const contas = this.readContas();
-
+  abrirContaCorrente(
+    funcionario: Funcionario,
+    criarContaDto: CreateContaCorrenteDto,
+  ): Contas {
     if (funcionario.cargo !== TipoCargo.GERENTE) {
       throw new NotFoundException(`Funcionário não autorizado`);
     }
 
-    let novaConta: Contas;
+    const novaConta = ContasFactory.criarConta(
+      TipoConta.CORRENTE,
+      this.idCounter++,
+      criarContaDto.numeroConta,
+      criarContaDto.saldo,
+      criarContaDto.transacoes,
+      criarContaDto.limiteChequeEspecial,
+    );
 
-    if (criarContaDto instanceof CreateContaCorrenteDto) {
-      novaConta = new ContaCorrente(
-        this.idCounter++,
-        criarContaDto.numeroConta,
-        criarContaDto.saldo,
-        criarContaDto.transacoes,
-        criarContaDto.limiteChequeEspecial,
-      );
-    } else if (criarContaDto instanceof CreateContaPoupancaDto) {
-      novaConta = new ContaPoupanca(
-        this.idCounter++,
-        criarContaDto.numeroConta,
-        criarContaDto.saldo,
-        criarContaDto.transacoes,
-        criarContaDto.taxaJuros,
-      );
-    } else {
-      throw new Error('Tipo de conta inválido');
+    const contas = this.readContas();
+    contas.push(novaConta);
+    this.writeContas(contas);
+    return novaConta;
+  }
+
+  abrirContaPoupanca(
+    funcionario: Funcionario,
+    criarContaDto: CreateContaPoupancaDto,
+  ): Contas {
+    if (funcionario.cargo !== TipoCargo.GERENTE) {
+      throw new NotFoundException(`Funcionário não autorizado`);
     }
 
+    const novaConta = ContasFactory.criarConta(
+      TipoConta.POUPANCA,
+      this.idCounter++,
+      criarContaDto.numeroConta,
+      criarContaDto.saldo,
+      criarContaDto.transacoes,
+      criarContaDto.taxaJuros,
+    );
+
+    const contas = this.readContas();
     contas.push(novaConta);
     this.writeContas(contas);
     return novaConta;
@@ -85,55 +93,6 @@ export class ContasService {
     }
 
     return conta;
-  }
-
-  atualizarConta(id: number, funcionario: Funcionario, updateContaDto: UpdateContaDto): Contas {
-    const contas = this.readContas();
-
-    if (funcionario.cargo !== TipoCargo.GERENTE) {
-      throw new NotFoundException(`Funcionário não autorizado`);
-    }
-
-    const contaIndex = contas.findIndex((c) => c.id === id);
-
-    if (contaIndex === -1) {
-      throw new NotFoundException(`Conta com ID ${id} não encontrada`);
-    }
-
-    let atualizarConta: Contas;
-    const contaAtual = contas[contaIndex];
-
-    if (updateContaDto instanceof UpdateContaCorrenteDto) {
-      if (!(contaAtual instanceof ContaCorrente)) {
-        throw new Error('Tipo de conta não corresponde ao tipo de atualização');
-      }
-
-      atualizarConta = new ContaCorrente(
-        contaAtual.id,
-        contaAtual.numeroConta,
-        contaAtual.saldo,
-        contaAtual.transacoes,
-        updateContaDto.limiteChequeEspecial || contaAtual.limiteChequeEspecial,
-      );
-    } else if (updateContaDto instanceof UpdateContaPoupancaDto) {
-      if (!(contaAtual instanceof ContaPoupanca)) {
-        throw new Error('Tipo de conta não corresponde ao tipo de atualização');
-      }
-
-      atualizarConta = new ContaPoupanca(
-        contaAtual.id,
-        contaAtual.numeroConta,
-        contaAtual.saldo,
-        contaAtual.transacoes,
-        updateContaDto.taxaJuros || contaAtual.taxaJuros,
-      );
-    } else {
-      throw new Error('Tipo de conta inválido');
-    }
-
-    contas[contaIndex] = atualizarConta;
-    this.writeContas(contas);
-    return atualizarConta;
   }
 
   fecharConta(id: number, funcionario: Funcionario): void {
@@ -151,25 +110,6 @@ export class ContasService {
 
     log(`Conta com ID ${id} removida`);
     this.writeContas(updatedContas);
-  }
-
-  depositar(id: number, valor: number): void {
-    const contas = this.readContas();
-    const conta = contas.find((c) => c.id === id);
-
-    if (!conta) {
-      throw new NotFoundException(`Conta com ID ${id} não encontrada`);
-    }
-
-    if (valor <= 0) {
-      throw new BadRequestException('Valor do depósito deve ser positivo');
-    }
-
-    conta.saldo += valor;
-    this.writeContas(contas);
-
-    // Registrar a transação
-    this.transacoesService.criarTransacao(id, valor, TipoTransacao.DEPOSITO);
   }
 
   sacar(id: number, valor: number): void {
@@ -235,7 +175,7 @@ export class ContasService {
     );
   }
 
-  consultarSaldo(id: number): number {
+  /* consultarSaldo(id: number): number {
     const contas = this.readContas();
     const conta = contas.find((c) => c.id === id);
 
@@ -248,9 +188,9 @@ export class ContasService {
     }
 
     return conta.saldo;
-  }
+  } */
 
-  private aplicarTaxaJuros(conta: ContaPoupanca): void {
+  /* private aplicarTaxaJuros(conta: ContaPoupanca): void {
     const dataAtual = new Date();
     const mesAtual = dataAtual.getMonth();
     const anoAtual = dataAtual.getFullYear();
@@ -270,9 +210,9 @@ export class ContasService {
       contas[contaIndex] = conta;
       this.writeContas(contas);
     }
-  }
+  } */
 
-  pagarConta(id: number, valor: number): void {
+  /* pagarConta(id: number, valor: number): void {
     const contas = this.readContas();
     const conta = contas.find((c) => c.id === id);
 
@@ -314,5 +254,73 @@ export class ContasService {
 
     // Registrar a transação
     this.transacoesService.criarTransacao(id, -valor, TipoTransacao.PAGAMENTO);
-  }
+  } */
+
+  /* atualizarConta(id: number, funcionario: Funcionario, updateContaDto: UpdateContaDto): Contas {
+    const contas = this.readContas();
+
+    if (funcionario.cargo !== TipoCargo.GERENTE) {
+      throw new NotFoundException(`Funcionário não autorizado`);
+    }
+
+    const contaIndex = contas.findIndex((c) => c.id === id);
+
+    if (contaIndex === -1) {
+      throw new NotFoundException(`Conta com ID ${id} não encontrada`);
+    }
+
+    let atualizarConta: Contas;
+    const contaAtual = contas[contaIndex];
+
+    if (updateContaDto instanceof UpdateContaCorrenteDto) {
+      if (!(contaAtual instanceof ContaCorrente)) {
+        throw new Error('Tipo de conta não corresponde ao tipo de atualização');
+      }
+
+      atualizarConta = new ContaCorrente(
+        contaAtual.id,
+        contaAtual.numeroConta,
+        contaAtual.saldo,
+        contaAtual.transacoes,
+        updateContaDto.limiteChequeEspecial || contaAtual.limiteChequeEspecial,
+      );
+    } else if (updateContaDto instanceof UpdateContaPoupancaDto) {
+      if (!(contaAtual instanceof ContaPoupanca)) {
+        throw new Error('Tipo de conta não corresponde ao tipo de atualização');
+      }
+
+      atualizarConta = new ContaPoupanca(
+        contaAtual.id,
+        contaAtual.numeroConta,
+        contaAtual.saldo,
+        contaAtual.transacoes,
+        updateContaDto.taxaJuros || contaAtual.taxaJuros,
+      );
+    } else {
+      throw new Error('Tipo de conta inválido');
+    }
+
+    contas[contaIndex] = atualizarConta;
+    this.writeContas(contas);
+    return atualizarConta;
+  } */
+
+  /*  depositar(id: number, valor: number): void {
+    const contas = this.readContas();
+    const conta = contas.find((c) => c.id === id);
+
+    if (!conta) {
+      throw new NotFoundException(`Conta com ID ${id} não encontrada`);
+    }
+
+    if (valor <= 0) {
+      throw new BadRequestException('Valor do depósito deve ser positivo');
+    }
+
+    conta.saldo += valor;
+    this.writeContas(contas);
+
+    // Registrar a transação
+    this.transacoesService.criarTransacao(id, valor, TipoTransacao.DEPOSITO);
+  } */
 }
