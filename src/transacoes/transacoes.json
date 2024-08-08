@@ -1,18 +1,37 @@
-[{
-    
+[
+  {
     "id": 8,
     "data": "2021-01-08",
     "numeroConta": 2,
     "valor": 50,
     "tipo": "deposito"
-    
-}, {
-    
+  },
+  {
     "id": 9,
     "data": "2021-01-09",
     "numeroConta": 1,
     "valor": 100,
     "tipo": "credito"
-    
-}
+  },
+  {
+    "id": 10,
+    "numConta": 2,
+    "valor": 100,
+    "tipo": "SAQUE",
+    "data": "2024-08-08T16:54:20.085Z"
+  },
+  {
+    "id": 11,
+    "numConta": 1,
+    "valor": 50,
+    "tipo": "TRANSFERENCIA",
+    "data": "2024-08-08T16:55:42.361Z"
+  },
+  {
+    "id": 12,
+    "numConta": 2,
+    "valor": 50,
+    "tipo": "TRANSFERENCIA",
+    "data": "2024-08-08T16:55:42.376Z"
+  }
 ]
