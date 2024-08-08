@@ -1,5 +1,6 @@
-import { Funcionario, TipoCargo } from './funcionario.entity';
+import { Funcionario } from './funcionario.entity';
 import { Cliente } from '../../clientes/entities/cliente.entity';
+import { TipoCargo } from 'src/common/enums/tipo-.conta.enum';
 
 export class Gerente extends Funcionario {
   constructor(

@@ -1,11 +1,4 @@
-export enum TipoTransacao {
-  DEBITO = 'debito',
-  CREDITO = 'credito',
-  DEPOSITO = "DEPOSITO",
-  SAQUE = "SAQUE",
-  TRANSFERENCIA = "TRANSFERENCIA",
-  PAGAMENTO = "PAGAMENTO",
-}
+import { TipoTransacao } from "src/common/enums/tipo-.conta.enum";
 
 export class Transacao {
   constructor(

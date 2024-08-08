@@ -1,4 +1,5 @@
-import { Funcionario, TipoCargo } from './funcionario.entity';
+import { TipoCargo } from 'src/common/enums/tipo-.conta.enum';
+import { Funcionario } from './funcionario.entity';
 
 export class Agente extends Funcionario {
   constructor(

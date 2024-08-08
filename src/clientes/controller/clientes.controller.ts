@@ -10,7 +10,8 @@ import {
 import { ClientesService } from '../service/clientes.service';
 import { CreateClienteDto } from '../dto/create-cliente.dto';
 import { UpdateClienteDto } from '../dto/update-cliente.dto';
-import { Funcionario, TipoCargo } from 'src/funcionarios/entities/funcionario.entity';
+import { Funcionario } from 'src/funcionarios/entities/funcionario.entity';
+import { TipoCargo } from 'src/common/enums/tipo-.conta.enum';
 
 @Controller('clientes')
 export class ClientesController {
@@ -20,7 +21,7 @@ export class ClientesController {
   create(@Body() createClienteDto: CreateClienteDto) {
     const funcionario: Funcionario = {
       id: 6,
-      nomeFuncionario: 'Nome',
+      nomeFuncionario: 'Joao Correa',
       cargo: TipoCargo.GERENTE,
       telefones: ['123456789'],
     };

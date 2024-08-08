@@ -1,5 +1,5 @@
-import { TipoCargo } from '../entities/funcionario.entity';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { TipoCargo } from 'src/common/enums/tipo-.conta.enum';
 
 export class CreateFuncionarioDto {
   @IsNotEmpty()

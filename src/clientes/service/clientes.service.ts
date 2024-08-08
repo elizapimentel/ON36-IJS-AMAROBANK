@@ -4,11 +4,9 @@ import { UpdateClienteDto } from '../dto/update-cliente.dto';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Cliente } from '../entities/cliente.entity';
-import {
-  Funcionario,
-  TipoCargo,
-} from 'src/funcionarios/entities/funcionario.entity';
+import { Funcionario } from 'src/funcionarios/entities/funcionario.entity';
 import { Contas } from 'src/contas/entities/conta.entity';
+import { TipoCargo } from 'src/common/enums/tipo-.conta.enum';
 
 @Injectable()
 export class ClientesService {
@@ -86,7 +84,7 @@ export class ClientesService {
     return clienteAtualizado;
   }
 
-  removerCliente(id: number):void {
+  removerCliente(id: number): void {
     const clientes = this.readClientes();
     const clienteIndex = clientes.findIndex((cliente) => cliente.id === id);
 

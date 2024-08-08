@@ -1,3 +1,4 @@
+import { TipoConta } from 'src/common/enums/tipo-.conta.enum';
 import { IConta } from 'src/common/interfaces/contaBancaria.interface';
 import { Transacao } from 'src/transacoes/entities/transacao.entity';
 
@@ -7,6 +8,7 @@ export class Contas implements IConta {
     public numeroConta: number,
     public saldo: number,
     public transacoes: Transacao[],
+    public tipoConta: TipoConta,
   ) {}
 
   depositar(valor: number): void {}

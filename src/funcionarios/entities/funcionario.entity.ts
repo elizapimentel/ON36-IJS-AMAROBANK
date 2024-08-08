@@ -1,7 +1,4 @@
-export enum TipoCargo {
-  AGENTE = 'Agente',
-  GERENTE = 'Gerente',
-}
+import { TipoCargo } from 'src/common/enums/tipo-.conta.enum';
 
 export class Funcionario {
   constructor(

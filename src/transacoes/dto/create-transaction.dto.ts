@@ -1,4 +1,4 @@
-import { TipoTransacao } from '../entities/transacao.entity';
+import { TipoTransacao } from 'src/common/enums/tipo-.conta.enum';
 
 export class CriarTransactionDto {
   readonly id: number;
