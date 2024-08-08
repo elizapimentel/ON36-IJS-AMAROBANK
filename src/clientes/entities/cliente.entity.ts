@@ -6,7 +6,7 @@ export class Cliente {
     public id: number,
     public nomeCompleto: string,
     public endereco: string,
-    public telefone: string,
+    public telefones: string[],
     public contas: Contas[],
     public gerente: Gerente,
   ) {}

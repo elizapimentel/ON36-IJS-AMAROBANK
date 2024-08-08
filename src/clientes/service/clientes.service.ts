@@ -42,7 +42,7 @@ export class ClientesService {
       this.idCounter++,
       createClienteDto.nomeCompleto,
       createClienteDto.endereco,
-      createClienteDto.telefone,
+      [],
       createClienteDto.contas,
       createClienteDto.gerente,
     );
