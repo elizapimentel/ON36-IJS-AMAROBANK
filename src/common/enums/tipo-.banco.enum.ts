@@ -4,8 +4,8 @@ export enum TipoConta {
 }
 
 export enum TipoCargo {
-  AGENTE = 'Agente',
-  GERENTE = 'Gerente',
+  AGENTE = 'AGENTE',
+  GERENTE = 'GERENTE',
 }
 
 export enum TipoTransacao {
