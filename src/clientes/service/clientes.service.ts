@@ -1,109 +1,67 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClienteDto } from '../dto/create-cliente.dto';
 import { UpdateClienteDto } from '../dto/update-cliente.dto';
-import * as fs from 'fs';
-import * as path from 'path';
 import { Cliente } from '../entities/cliente.entity';
-import { Funcionario } from 'src/funcionarios/entities/funcionario.entity';
-import { Contas } from 'src/contas/entities/conta.entity';
-import { TipoCargo } from 'src/common/enums/tipo-.conta.enum';
+import { Funcionario } from '../../funcionarios/entities/funcionario.entity';
+import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
+import { ClientesRepository } from '../repository/clientes.repository';
+import { FuncionariosRepository } from '../../funcionarios/repository/funcionario.repository';
+import { Gerente } from '../../funcionarios/entities/gerente.entity';
 
 @Injectable()
 export class ClientesService {
-  private readonly filePath = path.resolve('src/clientes/clientes.json');
-  private idCounter: number;
+  public clientes: Cliente[] = [];
 
-  constructor() {
-    const cliente = this.readClientes();
-    this.idCounter =
-      cliente.length > 0 ? cliente[cliente.length - 1].id + 1 : 1;
-  }
+  constructor(
+    private clienteRepo: ClientesRepository,
+    private funcionarioRepo: FuncionariosRepository,
+  ) { }
 
-  private readClientes(): Cliente[] {
-    const data = fs.readFileSync(this.filePath, 'utf8');
-    return JSON.parse(data) as Cliente[];
-  }
-
-  private writeClientes(cliente: Cliente[]): void {
-    fs.writeFileSync(this.filePath, JSON.stringify(cliente, null, 2), 'utf8');
-  }
-
-  cadastrarCliente(
+  async cadastrarCliente(
     funcionario: Funcionario,
-    createClienteDto: CreateClienteDto,
-  ) {
-    const clientes = this.readClientes();
-
+    criarClienteDto: CreateClienteDto,
+  ): Promise<Cliente> {
     if (funcionario.cargo !== TipoCargo.GERENTE) {
       throw new NotFoundException(`Funcionário não autorizado`);
     }
 
-    const novoCliente = new Cliente(
-      this.idCounter++,
-      createClienteDto.nomeCompleto,
-      createClienteDto.endereco,
-      [],
-      createClienteDto.contas,
-      createClienteDto.gerente,
-    );
+    const { nomeCompleto, endereco, telefones, gerenteId } = criarClienteDto;
 
-    clientes.push(novoCliente);
-    this.writeClientes(clientes);
-    return novoCliente;
+    const novoCliente = new Cliente(nomeCompleto, endereco, telefones);
+
+    if (gerenteId) {
+      const gerente = await this.funcionarioRepo.buscarGerentePorId(gerenteId);
+      if (gerente instanceof Gerente) {
+        novoCliente.gerente = gerente;
+      }
+    }
+    return this.clienteRepo.cadastrarCliente(novoCliente);
   }
 
-  findAll(): Cliente[] {
-    return this.readClientes();
+  listarTodos(): Cliente[] {
+    return this.clienteRepo.listarTodos();
   }
 
-  findById(id: number): Cliente {
-    const clientes = this.readClientes();
-    const cliente = clientes.find((cliente) => cliente.id === id);
-
+  encontrarPorId(id: string): Cliente {
+    const cliente = this.clientes.find((cliente) => cliente.id === id);
     if (!cliente) {
       throw new NotFoundException(`Cliente com id ${id} não encontrado`);
     }
-
-    return cliente;
+    return this.clienteRepo.encontrarPorId(id);
   }
 
-  atualizarCliente(id: number, updateClienteDto: UpdateClienteDto): Cliente {
-    const clientes = this.readClientes();
-    const clienteIndex = clientes.findIndex((cliente) => cliente.id === id);
-
-    if (clienteIndex === -1) {
-      throw new NotFoundException(`Cliente com id ${id} não encontrado`);
-    }
-
-    const clienteAtualizado = {
-      ...clientes[clienteIndex],
-      ...updateClienteDto,
-    };
-    clientes[clienteIndex] = clienteAtualizado;
-    this.writeClientes(clientes);
-    return clienteAtualizado;
-  }
-
-  removerCliente(id: number): void {
-    const clientes = this.readClientes();
-    const clienteIndex = clientes.findIndex((cliente) => cliente.id === id);
-
-    if (clienteIndex === -1) {
-      throw new NotFoundException(`Cliente com id ${id} não encontrado`);
-    }
-
-    clientes.splice(clienteIndex, 1);
-    this.writeClientes(clientes);
-  }
-
-  mostrarContasCliente(id: number): Contas[] {
-    const clientes = this.readClientes();
-    const cliente = clientes.find((cliente) => cliente.id === id);
-
+  atualizarCliente(id: string, updateClienteDto: UpdateClienteDto): Cliente {
+    const cliente = this.clientes.find((cliente) => cliente.id === id);
     if (!cliente) {
       throw new NotFoundException(`Cliente com id ${id} não encontrado`);
     }
+    return this.clienteRepo.atualizarCliente(id, updateClienteDto);
+  }
 
-    return cliente.contas;
+  removerCliente(id: string): void {
+    if (!id) {
+      throw new NotFoundException(`Cliente com id ${id} não encontrado`);
+    }
+    this.clienteRepo.removerCliente(id);
   }
 }
