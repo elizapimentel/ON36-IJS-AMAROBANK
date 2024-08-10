@@ -12,16 +12,22 @@ import { FuncionariosService } from '../service/funcionarios.service';
 import { CreateFuncionarioDto } from '../dto/create-funcionario.dto';
 import { Funcionario } from '../entities/funcionario.entity';
 import { UpdateFuncionarioDto } from '../dto/update-funcionario.dto';
+import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
+import { Agente } from '../entities/agente.entity';
+import { Gerente } from '../entities/gerente.entity';
 
 @Controller('funcionarios')
 export class FuncionariosController {
-  constructor(private readonly funcionarioService: FuncionariosService) {}
+  constructor(
+    private readonly funcionarioService: FuncionariosService
+    ) {}
 
   @Post()
   cadastrarFuncionario(
-    @Body() createFuncionarioDto: CreateFuncionarioDto,
+    @Body('cargo') cargo: TipoCargo,
+    @Body('funcionario') createFuncionarioDto: CreateFuncionarioDto
   ): Funcionario {
-    return this.funcionarioService.cadastrarFuncionario(createFuncionarioDto);
+    return this.funcionarioService.cadastrarFuncionario(cargo, createFuncionarioDto);
   }
 
   @Get()
@@ -29,7 +35,17 @@ export class FuncionariosController {
     return this.funcionarioService.findAll();
   }
 
-  @Patch(':id')
+  @Get(':id')
+  findGerenteById(@Param('id') id: string): Gerente | undefined {
+    return this.funcionarioService.findGerenteById(id);
+  }
+
+  @Get(':id')
+  findFuncionarioById(@Param('id') id: string): Funcionario | undefined {
+    return this.funcionarioService.findGerenteById(id);
+  }
+
+ /*  @Patch(':id')
   atualizarFuncionario(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateFuncionarioDto: UpdateFuncionarioDto,
@@ -45,8 +61,5 @@ export class FuncionariosController {
     return this.funcionarioService.removerFuncionario(+id);
   }
 
-  @Get(':id')
-  findById(@Param('id', ParseIntPipe) id: number): Funcionario {
-    return this.funcionarioService.findById(+id);
-  }
+   */
 }
