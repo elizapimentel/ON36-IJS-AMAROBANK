@@ -1,15 +1,10 @@
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { TipoCargo } from 'src/common/enums/tipo-.conta.enum';
+import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
+import { Cliente } from '../../clientes/entities/cliente.entity';
 
 export class CreateFuncionarioDto {
-  @IsNotEmpty()
-  @IsString()
-  readonly nomeFuncionario: string;
-
-  @IsNotEmpty()
-  @IsEnum(TipoCargo)
   readonly cargo: TipoCargo;
-
-  @IsNotEmpty()
+  readonly nomeCompleto: string;
+  readonly endereco: string;
   readonly telefones: string[];
+  readonly clientes?: Cliente[];
 }

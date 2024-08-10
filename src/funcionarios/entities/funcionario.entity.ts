@@ -1,10 +1,18 @@
-import { TipoCargo } from 'src/common/enums/tipo-.conta.enum';
+import { Cliente } from '../../clientes/entities/cliente.entity';
+import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
+import { IPessoa } from '../../common/interfaces/pessoa.interface';
 
-export class Funcionario {
-  constructor(
-    public id: number,
-    public nomeFuncionario: string,
-    public cargo: TipoCargo,
-    public telefones: string[],
-  ) {}
+export class Funcionario implements IPessoa {
+  id?: string;
+  cargo: TipoCargo.AGENTE | TipoCargo.GERENTE;
+  nomeCompleto: string;
+  endereco: string;
+  telefones: string[];
+  clientes?: Cliente[];
+  constructor(cargo: TipoCargo, nomeFuncionario: string, endereco: string, telefones: string[]) {
+    this.cargo = cargo;
+    this.nomeCompleto = nomeFuncionario;
+    this.endereco = endereco;
+    this.telefones = telefones;
+  }
 }
