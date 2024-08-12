@@ -20,7 +20,7 @@ export class ClientesRepository {
 
   encontrarPorId(id: string): Cliente {
     const cliente = this.clientes.find((cliente) => cliente.id === id);
-    return cliente;
+    return cliente || null;
   }
 
   salvar(cliente: Cliente): Cliente {

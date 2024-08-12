@@ -43,11 +43,11 @@ export class ClientesService {
   }
 
   encontrarPorId(id: string): Cliente {
-    const cliente = this.clientes.find((cliente) => cliente.id === id);
+    const cliente = this.clienteRepo.encontrarPorId(id);
     if (!cliente) {
       throw new NotFoundException(`Cliente com id ${id} não encontrado`);
     }
-    return this.clienteRepo.encontrarPorId(id);
+    return cliente;
   }
 
   atualizarCliente(id: string, updateClienteDto: UpdateClienteDto): Cliente {
