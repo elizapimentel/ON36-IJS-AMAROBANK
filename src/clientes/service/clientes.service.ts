@@ -51,17 +51,22 @@ export class ClientesService {
   }
 
   atualizarCliente(id: string, updateClienteDto: UpdateClienteDto): Cliente {
-    const cliente = this.clientes.find((cliente) => cliente.id === id);
+    const cliente = this.clienteRepo.encontrarPorId(id);
     if (!cliente) {
       throw new NotFoundException(`Cliente com id ${id} não encontrado`);
     }
-    return this.clienteRepo.atualizarCliente(id, updateClienteDto);
-  }
+
+    const clienteAtualizado = {
+      ...cliente,
+      ...updateClienteDto,
+    };
+
+    return this.clienteRepo.salvar(clienteAtualizado);
+  };
 
   removerCliente(id: string): void {
-    if (!id) {
-      throw new NotFoundException(`Cliente com id ${id} não encontrado`);
-    }
-    this.clienteRepo.removerCliente(id);
+    const cliente = this.encontrarPorId(id);
+    this.clienteRepo.removerCliente(cliente.id);
   }
+
 }

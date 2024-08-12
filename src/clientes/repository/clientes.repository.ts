@@ -1,7 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Cliente } from '../entities/cliente.entity';
 import { randomUUID as uuid } from 'crypto';
-import { UpdateClienteDto } from '../dto/update-cliente.dto';
 
 @Injectable()
 export class ClientesRepository {
@@ -24,16 +23,11 @@ export class ClientesRepository {
     return cliente;
   }
 
-  atualizarCliente(id: string, atualizaCliente: UpdateClienteDto): Cliente {
-    const cliente = this.clientes.find((cliente) => cliente.id === id);
-    const clienteAtualizado = {
-      ...cliente,
-      ...atualizaCliente,
-    };
-    this.clientes = this.clientes.map((cliente) =>
-      cliente.id === id ? clienteAtualizado : cliente,
+  salvar(cliente: Cliente): Cliente {
+    this.clientes = this.clientes.map((c) =>
+      c.id === cliente.id ? cliente : c,
     );
-    return clienteAtualizado;
+    return cliente;
   }
 
   removerCliente(id: string): void {
