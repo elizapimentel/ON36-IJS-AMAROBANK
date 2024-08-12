@@ -8,6 +8,8 @@ import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../app.module';
 import * as request from 'supertest';
+import exp from 'constants';
+import { UpdateClienteDto } from '../dto/update-cliente.dto';
 
 describe('Clientes Controller', () => {
   let controller: ClientesController;
@@ -62,6 +64,21 @@ describe('Clientes Controller', () => {
     gerenteId: 'gerente-id',
   };
 
+  const mockUpdateClienteDto: UpdateClienteDto = {
+    nomeCompleto: 'João da Silva',
+    endereco: 'Rua 123',
+    telefones: ['987654321', '123456789'],
+    gerenteId: 'gerente-id',
+  };
+
+  const mockCliente2: Cliente = {
+    id: 'cliente-id',
+    nomeCompleto: 'João da Silva',
+    endereco: 'Rua 123',
+    telefones: ['987654321', '123456789'],
+    gerente: null,
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -72,6 +89,9 @@ describe('Clientes Controller', () => {
           useValue: {
             cadastrarCliente: jest.fn().mockResolvedValue(mockCliente),
             listarTodos: jest.fn().mockResolvedValue(mockClientes),
+            encontrarPorId: jest.fn().mockResolvedValue(mockCliente),
+            atualizarCliente: jest.fn().mockResolvedValue(mockCliente2),
+            removerCliente: jest.fn().mockResolvedValue({}),
           },
         },
       ],
@@ -104,4 +124,31 @@ describe('Clientes Controller', () => {
         expect(res.body).toEqual(mockClientes);
       });
   });
+
+  test('deve encontrar um cliente por id', () => {
+    return request(app.getHttpServer())
+      .get(`/clientes/${mockCliente.id}`)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body).toEqual(mockCliente);
+      });
+  });
+
+  test('deve atualizar um cliente', () => {
+    return request(app.getHttpServer())
+      .patch(`/clientes/${mockCliente.id}`)
+      .send(mockUpdateClienteDto)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body).toEqual(mockCliente2);
+      });
+  });
+
+  test('deve remover um cliente', () => {
+    return request(app.getHttpServer())
+      .delete(`/clientes/${mockCliente.id}`)
+      .expect(200);
+  });
+    
+
 });
