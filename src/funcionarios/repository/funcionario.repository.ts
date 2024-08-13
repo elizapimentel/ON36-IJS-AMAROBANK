@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { randomUUID as uuid } from 'crypto';
 import { Funcionario } from '../entities/funcionario.entity';
 import { Gerente } from '../entities/gerente.entity';
-import { Agente } from '../entities/agente.entity';
 
 @Injectable()
 export class FuncionariosRepository {
@@ -32,7 +31,5 @@ export class FuncionariosRepository {
     const funcionario = this.funcionarios.find(funcionario => funcionario.id === id);
     return funcionario;
   }
-
-
 
 }
