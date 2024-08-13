@@ -1,11 +1,21 @@
-import { Transacao } from "src/transacoes/entities/transacao.entity";
+import { TipoConta } from 'src/common/enums/tipo-.conta.enum';
+import { IConta } from 'src/common/interfaces/contaBancaria.interface';
+import { Transacao } from 'src/transacoes/entities/transacao.entity';
 
-export class Conta {
-    constructor(
-        public id: number,
-        public numeroConta: number,
-        public saldo: number,
-        public tipoConta: string,
-        public transacoes: Transacao[]
-    ){}
+export class Contas implements IConta {
+  constructor(
+    public id: number,
+    public numeroConta: number,
+    public saldo: number,
+    public transacoes: Transacao[],
+    public tipoConta: TipoConta,
+  ) {}
+
+  depositar(valor: number): void {}
+  sacar(valor: number): void {}
+  transferir(valor: number, contaDestino: Contas): void {}
+  consultarSaldo(): number {
+    return this.saldo;
+  }
+  pagarConta(valor: number): void {}
 }

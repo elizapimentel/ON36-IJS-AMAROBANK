@@ -1,14 +1,13 @@
-import { Funcionario, TipoCargo } from "./funcionario.entity";
+import { TipoCargo } from 'src/common/enums/tipo-.conta.enum';
+import { Funcionario } from './funcionario.entity';
 
 export class Agente extends Funcionario {
-       
-    constructor(
-        agenteId: number,
-        nomeFuncionario: string, 
-        cargo: string, 
-        telefones: string[], 
-        autorizado: boolean) {
-        super(agenteId, nomeFuncionario, TipoCargo.AGENTE, telefones);
-    }
-
+  constructor(
+    public agenteId: number,
+    public nomeFuncionario: string,
+    public cargo: TipoCargo,
+    public telefones: string[],
+  ) {
+    super(agenteId, nomeFuncionario, TipoCargo.AGENTE, telefones);
+  }
 }
