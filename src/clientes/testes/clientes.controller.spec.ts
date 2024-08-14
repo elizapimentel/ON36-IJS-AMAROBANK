@@ -8,7 +8,6 @@ import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../app.module';
 import * as request from 'supertest';
-import exp from 'constants';
 import { UpdateClienteDto } from '../dto/update-cliente.dto';
 
 describe('Clientes Controller', () => {
