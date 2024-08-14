@@ -28,7 +28,7 @@ describe('ClientesService', () => {
             cargo: TipoCargo.GERENTE,
             nomeCompleto: 'Ana dos Santos',
             endereco: 'Rua 2, 456',
-            telefones: ['(11) 99999-9999', '(11) 98888-8888']
+            telefones: ['(11) 99999-9999', '(11) 98888-8888'],
         };
         const clienteEsperado = new Cliente('Joao da Silva', 'Rua 1, 123', ['(11) 99999-9999', '(11) 98888-8888']);
 
