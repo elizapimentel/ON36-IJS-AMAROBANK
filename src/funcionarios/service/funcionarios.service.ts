@@ -1,11 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Funcionario } from '../entities/funcionario.entity';
 import { CreateFuncionarioDto } from '../dto/create-funcionario.dto';
 import { FuncionariosFactory } from '../../factories/funcionarios.factory';
 import { FuncionariosRepository } from '../repository/funcionario.repository';
 import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
 import { Gerente } from '../entities/gerente.entity';
-import { Agente } from '../entities/agente.entity';
 
 @Injectable()
 export class FuncionariosService {
