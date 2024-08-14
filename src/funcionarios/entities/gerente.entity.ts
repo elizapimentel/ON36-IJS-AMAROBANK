@@ -1,16 +1,18 @@
 import { Funcionario } from './funcionario.entity';
 import { Cliente } from '../../clientes/entities/cliente.entity';
-import { TipoCargo } from 'src/common/enums/tipo-.conta.enum';
+import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
 
 export class Gerente extends Funcionario {
-  constructor(
-    public gerenteId: number,
-    public nomeFuncionario: string,
-    public cargo: TipoCargo,
-    public telefones: string[],
-    public clientes: Cliente[],
+  clientes: Cliente[];
+
+   constructor(
+    cargo: TipoCargo,
+    nomeCompleto: string,
+    endereco: string,
+    telefones: string[],
+    clientes: Cliente[] = []
   ) {
-    super(gerenteId, nomeFuncionario, TipoCargo.GERENTE, telefones);
+    super(cargo, nomeCompleto, endereco, telefones);
     this.clientes = clientes;
   }
 }

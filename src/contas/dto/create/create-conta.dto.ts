@@ -1,12 +1,8 @@
-import { IsEnum } from 'class-validator';
-import { TipoConta } from 'src/common/enums/tipo-.conta.enum';
-import { Transacao } from 'src/transacoes/entities/transacao.entity';
+import { Transacao } from '../../../transacoes/entities/transacao.entity';
 
 export class CreateContaDto {
-  readonly id: number;
-  readonly numeroConta: number;
+  readonly id?: string;
+  readonly numeroConta: string;
   readonly saldo: number;
-  @IsEnum(TipoConta)
-  readonly conta: TipoConta;
   readonly transacoes: Transacao[];
 }

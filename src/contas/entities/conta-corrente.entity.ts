@@ -1,17 +1,15 @@
-import { Transacao } from "src/transacoes/entities/transacao.entity";
+import { Transacao } from "../../transacoes/entities/transacao.entity";
 import { Contas } from "./conta.entity";
-import { TipoConta } from "src/common/enums/tipo-.conta.enum";
 
 
 export class ContaCorrente extends Contas {
   constructor(
-    id: number,
-    numeroConta: number,
+    numeroConta: string,
     saldo: number,
     transacoes: Transacao[],
-    tipoConta: TipoConta.CORRENTE,
     public limiteChequeEspecial: number,
   ) {
-    super(id, numeroConta, saldo, transacoes,tipoConta);
+    super(numeroConta, saldo, transacoes);
+    this.limiteChequeEspecial = limiteChequeEspecial;
   }
 }

@@ -1,5 +1,5 @@
 import { CreateContaDto } from './create-conta.dto';
 
 export class CreateContaCorrenteDto extends CreateContaDto {
-  readonly limiteChequeEspecial: number;
+  limiteChequeEspecial: number;
 }

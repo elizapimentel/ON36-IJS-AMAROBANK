@@ -1,179 +1,134 @@
 import {
   BadRequestException,
-  forwardRef,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import * as fs from 'fs';
-import * as path from 'path';
-import { TransacoesService } from 'src/transacoes/service/transacoes.service';
 import { Funcionario } from 'src/funcionarios/entities/funcionario.entity';
 import { Contas } from '../entities/conta.entity';
 import { CreateContaCorrenteDto } from '../dto/create/create-conta-corrente.dto';
-import { CreateContaPoupancaDto } from '../dto/create/create-conta-poupana.dto';
-import { log } from 'console';
+import { CreateContaPoupancaDto } from '../dto/create/create-conta-poupanca.dto';
 import { ContasFactory } from 'src/factories/contas.factory';
-import { TipoCargo, TipoConta, TipoTransacao } from 'src/common/enums/tipo-.conta.enum';
+import { TipoCargo, TipoConta, TipoTransacao } from '../../common/enums/tipo-.banco.enum';
+import { ContasRepository } from '../repository/contas.repository';
+import { ContaCorrente } from '../entities/conta-corrente.entity';
+import { ContaPoupanca } from '../entities/conta-poupanca.entity';
+import { TransacoesRepository } from '../../transacoes/repository/transacoes.repository';
+import { IContaService } from './IContasService.interface';
+import { CriarTransactionDto } from 'src/transacoes/dto/create-transaction.dto';
+import { TransacoesFactory } from '../../factories/transacoes.factory';
+import { randomUUID as uuid } from 'crypto';
 
 @Injectable()
-export class ContasService {
-  private readonly filePath = path.resolve('src/contas/contas.json');
-  private idCounter: number;
+export class ContasService implements IContaService {
 
   constructor(
-    @Inject(forwardRef(() => TransacoesService))
-    private readonly transacoesService: TransacoesService,
-  ) {
-    const contas = this.readContas();
-    this.idCounter = contas.length > 0 ? contas[contas.length - 1].id + 1 : 1;
-  }
+    private readonly contasRepo: ContasRepository,
+    private readonly transacaoRepo: TransacoesRepository,
+    private readonly contasFactory: ContasFactory,
+    private readonly transacaoFactory: TransacoesFactory,
+  ) { }
 
-  private readContas(): Contas[] {
-    const data = fs.readFileSync(this.filePath, 'utf8');
-    return JSON.parse(data) as Contas[];
-  }
 
-  private writeContas(contas: Contas[]): void {
-    fs.writeFileSync(this.filePath, JSON.stringify(contas, null, 2), 'utf8');
-  }
-
-  abrirContaCorrente(
+  cadastrarContaCorrente(
     funcionario: Funcionario,
-    criarContaDto: CreateContaCorrenteDto,
-  ): Contas {
+    contaDto: CreateContaCorrenteDto,
+  ): ContaCorrente {
     if (funcionario.cargo !== TipoCargo.GERENTE) {
       throw new NotFoundException(`Funcionário não autorizado`);
     }
 
-    const novaConta = ContasFactory.criarConta(
+    const novaContaCorrente = this.contasFactory.criarConta(
       TipoConta.CORRENTE,
-      this.idCounter++,
-      criarContaDto.numeroConta,
-      criarContaDto.saldo,
-      criarContaDto.transacoes,
-      criarContaDto.limiteChequeEspecial,
-    );
+      contaDto
+    ) as ContaCorrente;
 
-    const contas = this.readContas();
-    contas.push(novaConta);
-    this.writeContas(contas);
-    return novaConta;
+    return this.contasRepo.cadastrarContaCorrente(novaContaCorrente);
   }
 
-  abrirContaPoupanca(
+
+  cadastrarContaPoupanca(
     funcionario: Funcionario,
-    criarContaDto: CreateContaPoupancaDto,
-  ): Contas {
+    contaDto: CreateContaPoupancaDto,
+  ): ContaPoupanca {
     if (funcionario.cargo !== TipoCargo.GERENTE) {
       throw new NotFoundException(`Funcionário não autorizado`);
     }
 
-    const novaConta = ContasFactory.criarConta(
+    const novaContaPoupanca = this.contasFactory.criarConta(
       TipoConta.POUPANCA,
-      this.idCounter++,
-      criarContaDto.numeroConta,
-      criarContaDto.saldo,
-      criarContaDto.transacoes,
-      criarContaDto.taxaJuros,
-    );
+      contaDto
+    ) as ContaPoupanca;
 
-    const contas = this.readContas();
-    contas.push(novaConta);
-    this.writeContas(contas);
-    return novaConta;
+    return this.contasRepo.cadastrarContaPoupanca(novaContaPoupanca);
   }
 
-  findById(id: number): Contas {
-    const contas = this.readContas();
-    const conta = contas.find((c) => c.id === id);
-
-    if (!conta) {
-      throw new NotFoundException(`Conta com ID ${id} não encontrada`);
-    }
-
-    return conta;
+  encontrarConta(numeroConta: string): Contas | undefined {
+    return this.contasRepo.encontrarConta(numeroConta);
   }
 
-  fecharConta(id: number, funcionario: Funcionario): void {
-    const contas = this.readContas();
-
+  encerrarConta(numeroConta: string, funcionario: Funcionario): void {
     if (funcionario.cargo !== TipoCargo.GERENTE) {
       throw new NotFoundException(`Funcionário não autorizado`);
     }
-
-    const updatedContas = contas.filter((c) => c.id !== id);
-
-    if (contas.length === updatedContas.length) {
-      throw new NotFoundException(`Conta com ID ${id} não encontrado`);
+    const conta = this.encontrarConta(numeroConta);
+    if (!conta) {
+      throw new NotFoundException(`Conta com número ${numeroConta} não encontrada`);
     }
-
-    log(`Conta com ID ${id} removida`);
-    this.writeContas(updatedContas);
+    this.contasRepo.encerrarConta(conta.numeroConta);
   }
 
-  sacar(id: number, valor: number): void {
-    const contas = this.readContas();
-    const conta = contas.find((c) => c.id === id);
-
+  sacar(numeroConta: string, valor: number): void {
+    const conta = this.encontrarConta(numeroConta);
     if (!conta) {
-      throw new NotFoundException(`Conta com ID ${id} não encontrada`);
+      throw new NotFoundException(`Conta ${numeroConta} não encontrada`);
     }
-
     if (valor <= 0) {
       throw new BadRequestException('Valor do saque deve ser positivo');
     }
-
     if (conta.saldo < valor) {
       throw new BadRequestException('Saldo insuficiente');
     }
 
-    conta.saldo -= valor;
-    this.writeContas(contas);
+    this.contasRepo.sacar(numeroConta, valor);
 
-    this.transacoesService.criarTransacao(id, valor, TipoTransacao.SAQUE);
+    this.addTransacao(numeroConta, -valor, TipoTransacao.SAQUE);
+
   }
 
-  transferir(idOrigem: number, idDestino: number, valor: number): void {
-    const contas = this.readContas();
-    const contaOrigem = contas.find((c) => c.id === idOrigem);
-    const contaDestino = contas.find((c) => c.id === idDestino);
-
-    if (!contaOrigem) {
-      throw new NotFoundException(
-        `Conta de origem com ID ${idOrigem} não encontrada`,
-      );
-    }
-
-    if (!contaDestino) {
-      throw new NotFoundException(
-        `Conta de destino com ID ${idDestino} não encontrada`,
-      );
-    }
-
-    if (valor <= 0) {
-      throw new BadRequestException('Valor da transferência deve ser positivo');
-    }
-
-    if (contaOrigem.saldo < valor) {
-      throw new BadRequestException('Saldo insuficiente');
-    }
-
-    contaOrigem.saldo -= valor;
-    contaDestino.saldo += valor;
-    this.writeContas(contas);
-
-    this.transacoesService.criarTransacao(
-      idOrigem,
-      valor,
-      TipoTransacao.TRANSFERENCIA,
-    );
-    this.transacoesService.criarTransacao(
-      idDestino,
-      valor,
-      TipoTransacao.TRANSFERENCIA,
-    );
+  depositar(numConta: string, valor: number): void {
+    throw new Error('Method not implemented.');
   }
+  transferir(valor: number, contaDestino: Contas): void {
+    throw new Error('Method not implemented.');
+  }
+  consultarSaldo(numConta: string): number {
+    throw new Error('Method not implemented.');
+  }
+  pagarConta(valor: number): void {
+    throw new Error('Method not implemented.');
+  }
+
+
+  private addTransacao(numeroConta: string, valor: number, tipo: TipoTransacao): void {
+    const dto: CriarTransactionDto = {
+      id: uuid(),
+      numConta: numeroConta,
+      valor: valor,
+      tipo: tipo,
+      data: new Date(),
+    };
+
+    const transacao = this.transacaoFactory.criarTransacao(dto);
+
+    console.log('Transação criada:', transacao);
+
+    this.transacaoRepo.cadastrarTransacao(transacao);
+
+     console.log('Transações após cadastro:', this.transacaoRepo.transacoes);
+
+  }
+
+
 
   /* consultarSaldo(id: number): number {
     const contas = this.readContas();

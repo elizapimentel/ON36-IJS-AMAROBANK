@@ -1,68 +1,33 @@
 import {
-  forwardRef,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import * as fs from 'fs';
-import * as path from 'path';
-import { ContasService } from 'src/contas/services/contas.service';
 import { Transacao } from '../entities/transacao.entity';
-import { TipoTransacao } from 'src/common/enums/tipo-.conta.enum';
+import { TransacoesRepository } from '../repository/transacoes.repository';
+import { CriarTransactionDto } from '../dto/create-transaction.dto';
+import { TransacoesFactory } from 'src/factories/transacoes.factory';
 
 @Injectable()
 export class TransacoesService {
-  private readonly filePath = path.resolve('src/transacoes/transacoes.json');
-  private idCounter: number;
 
   constructor(
-    @Inject(forwardRef(() => ContasService))
-    private readonly contasService: ContasService,
-  ) {
-    const transacoes = this.readTransacoes();
-    this.idCounter =
-      transacoes.length > 0 ? transacoes[transacoes.length - 1].id + 1 : 1;
+    private transacoesRepo: TransacoesRepository,
+    private transacoesFactory: TransacoesFactory,
+    ) { }
+
+  criarTransacao(transacao: CriarTransactionDto): Transacao {
+    const novaTransacao = this.transacoesFactory.criarTransacao(transacao);
+    return this.transacoesRepo.cadastrarTransacao(novaTransacao);
   }
 
-  private readTransacoes(): Transacao[] {
-    const data = fs.readFileSync(this.filePath, 'utf8');
-    return JSON.parse(data) as Transacao[];
-  }
-
-  private writeTransacoes(transactions: Transacao[]): void {
-    fs.writeFileSync(
-      this.filePath,
-      JSON.stringify(transactions, null, 2),
-      'utf8',
-    );
-  }
-
-  criarTransacao(
-    numConta: number,
-    valor: number,
-    tipo: TipoTransacao,
-  ): Transacao {
-    const conta = this.contasService.findById(numConta);
-    if (!conta) {
-      throw new NotFoundException('Conta não encontrada');
+  mostrarTransacoesPorConta(numConta: string): Transacao[] {
+    const transacoes = this.transacoesRepo.listarTransacoesPorConta(numConta.trim());
+    if (!transacoes || transacoes.length === 0) {
+      throw new NotFoundException(
+        `Nenhuma transação encontrada para a conta ${numConta}`,
+      );
     }
-
-    const novaTransacao = new Transacao(
-      this.idCounter++,
-      numConta,
-      valor,
-      tipo,
-      new Date(),
-    );
-
-    const transacoes = this.readTransacoes();
-    transacoes.push(novaTransacao);
-    this.writeTransacoes(transacoes);
-    return novaTransacao;
+    return transacoes;
   }
 
-  mostrartransacoesPorConta(numConta:number): Transacao[] {
-    const transacoes = this.readTransacoes();
-    return transacoes.filter((transacao) => transacao.numConta === numConta);
-  }
 }
