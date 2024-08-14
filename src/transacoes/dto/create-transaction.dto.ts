@@ -1,8 +1,10 @@
-import { TipoTransacao } from 'src/common/enums/tipo-.conta.enum';
+import { TipoTransacao } from '../../common/enums/tipo-.banco.enum';
 
 export class CriarTransactionDto {
-  readonly id: number;
-  readonly numConta: number;
+  readonly id: string;
+  readonly numConta: string;
   readonly valor: number;
   readonly tipo: TipoTransacao;
+  readonly data: Date;
+
 }
