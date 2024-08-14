@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-// import { Cliente } from '../clientes/entities/cliente.entity';
 import { TipoCargo } from '../common/enums/tipo-.banco.enum';
 import { Agente } from '../funcionarios/entities/agente.entity';
 import { Funcionario } from '../funcionarios/entities/funcionario.entity';
