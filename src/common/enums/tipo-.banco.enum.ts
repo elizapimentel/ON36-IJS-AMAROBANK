@@ -1,6 +1,7 @@
 export enum TipoConta {
   CORRENTE = 'CORRENTE',
   POUPANCA = 'POUPANCA',
+  PJ = 'PJ',
 }
 
 export enum TipoCargo {
@@ -9,8 +10,8 @@ export enum TipoCargo {
 }
 
 export enum TipoTransacao {
-  DEBITO = 'debito',
-  CREDITO = 'credito',
+  DEBITO = 'DEBITO',
+  CREDITO = 'CREDITO',
   DEPOSITO = "DEPOSITO",
   SAQUE = "SAQUE",
   TRANSFERENCIA = "TRANSFERENCIA",
