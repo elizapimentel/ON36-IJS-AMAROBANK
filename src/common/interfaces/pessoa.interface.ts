@@ -1,5 +1,6 @@
 export interface IPessoa {
-    nomeCompleto: string;
+    nomeCompleto?: string;
+    razao_social?: string;
     endereco: string;
     telefones: string[];
 }
