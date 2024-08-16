@@ -5,7 +5,7 @@ import {
 import { Transacao } from '../entities/transacao.entity';
 import { TransacoesRepository } from '../repository/transacoes.repository';
 import { CriarTransactionDto } from '../dto/create-transaction.dto';
-import { TransacoesFactory } from 'src/factories/transacoes.factory';
+import { TransacoesFactory } from '../../factories/transacoes.factory';
 
 @Injectable()
 export class TransacoesService {
