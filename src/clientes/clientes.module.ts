@@ -8,8 +8,8 @@ import { FuncionariosRepository } from '../funcionarios/repository/funcionario.r
 
 @Module({
   controllers: [ClientesController],
-  providers: [ClientesService, ClientesRepository, FuncionariosRepository, Contas],
+  providers: [ClientesService, ClientesRepository, FuncionariosRepository],
   exports: [ClientesService],
-  imports: [Gerente],
+  imports: [Gerente, Contas],
 })
 export class ClientesModule {}
