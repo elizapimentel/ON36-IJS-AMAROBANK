@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateClienteDto } from '../dto/create-cliente.dto';
 import { UpdateClienteDto } from '../dto/update-cliente.dto';
 import { Cliente } from '../entities/cliente.entity';
@@ -7,15 +7,18 @@ import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
 import { ClientesRepository } from '../repository/clientes.repository';
 import { FuncionariosRepository } from '../../funcionarios/repository/funcionario.repository';
 import { Gerente } from '../../funcionarios/entities/gerente.entity';
+import { IClienteService } from './IClienteService.interface';
+
 
 @Injectable()
-export class ClientesService {
+export class ClientesService implements IClienteService {
   public clientes: Cliente[] = [];
 
   constructor(
     private clienteRepo: ClientesRepository,
     private funcionarioRepo: FuncionariosRepository,
   ) { }
+
 
   async cadastrarCliente(
     funcionario: Funcionario,
