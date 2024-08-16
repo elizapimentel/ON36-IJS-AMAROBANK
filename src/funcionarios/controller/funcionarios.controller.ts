@@ -1,19 +1,14 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
-  ParseIntPipe,
-  Patch,
   Post,
 } from '@nestjs/common';
 import { FuncionariosService } from '../service/funcionarios.service';
 import { CreateFuncionarioDto } from '../dto/create-funcionario.dto';
 import { Funcionario } from '../entities/funcionario.entity';
-import { UpdateFuncionarioDto } from '../dto/update-funcionario.dto';
 import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
-import { Agente } from '../entities/agente.entity';
 import { Gerente } from '../entities/gerente.entity';
 
 @Controller('funcionarios')
