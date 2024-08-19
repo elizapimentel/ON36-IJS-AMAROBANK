@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FuncionariosService } from '../service/funcionarios.service';
 import { FuncionariosRepository } from '../repository/funcionario.repository';
-import { FuncionariosFactory } from '../../factories/funcionarios.factory';
+import { FuncionariosFactory } from '../../factories/funcionarios/funcionarios.factory';
 import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
 import { CreateFuncionarioDto } from '../../funcionarios/dto/create-funcionario.dto';
 import { Gerente } from '../../funcionarios/entities/gerente.entity';
@@ -10,7 +10,6 @@ import { Agente } from '../../funcionarios/entities/agente.entity';
 
 describe('FuncionariosService', () => {
   let funcionariosService: FuncionariosService;
-  let funcionariosRepository: FuncionariosRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -22,7 +21,6 @@ describe('FuncionariosService', () => {
     }).compile();
 
     funcionariosService = module.get<FuncionariosService>(FuncionariosService);
-    funcionariosRepository = module.get<FuncionariosRepository>(FuncionariosRepository);
   });
 
   test('deve criar um Agente', () => {

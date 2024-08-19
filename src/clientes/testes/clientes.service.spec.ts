@@ -1,9 +1,9 @@
-import { ClientesService } from '../../clientes/service/clientes.service';
-import { ClientesRepository } from '../repository/clientes.repository';
-import { Cliente } from '../entities/cliente.entity';
 import { FuncionariosRepository } from '../../funcionarios/repository/funcionario.repository';
 import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
 import { NotFoundException } from '@nestjs/common/exceptions';
+import { ClientesService } from '../application/service/clientes.service';
+import { ClientesRepository } from '../infra/adapters/outbound/repository/clientes.repository';
+import { Cliente } from '../domain/entities/cliente.entity';
 
 jest.mock('crypto', () => ({
     randomUUID: jest.fn().mockReturnValue('123'),

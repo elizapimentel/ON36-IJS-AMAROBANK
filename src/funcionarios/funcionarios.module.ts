@@ -3,7 +3,7 @@ import { FuncionariosController } from './controller/funcionarios.controller';
 import { FuncionariosService } from './service/funcionarios.service';
 import { ClientesModule } from '../clientes/clientes.module';
 import { FuncionariosRepository } from './repository/funcionario.repository';
-import { FuncionariosFactory } from '../factories/funcionarios.factory';
+import { FuncionariosFactory } from '../factories/funcionarios/funcionarios.factory';
 
 @Module({
   imports: [ClientesModule],

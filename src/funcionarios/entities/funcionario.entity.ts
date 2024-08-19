@@ -1,4 +1,4 @@
-import { Cliente } from '../../clientes/entities/cliente.entity';
+import { Cliente } from '../../clientes/domain/entities/cliente.entity';
 import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
 import { IPessoa } from '../../common/interfaces/pessoa.interface';
 

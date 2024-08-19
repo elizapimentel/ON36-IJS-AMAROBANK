@@ -10,7 +10,7 @@ import { ContasService } from '../services/contas.service';
 import { CreateContaCorrenteDto } from '../dto/create/create-conta-corrente.dto';
 import { CreateContaPoupancaDto } from '../dto/create/create-conta-poupanca.dto';
 import { Gerente } from '../../funcionarios/entities/gerente.entity';
-import { TipoCargo } from 'src/common/enums/tipo-.banco.enum';
+import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
 
 @Controller('contas')
 export class ContasController {

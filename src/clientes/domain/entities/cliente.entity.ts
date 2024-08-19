@@ -1,6 +1,6 @@
-import { Contas } from '../../contas/entities/conta.entity';
-import { Gerente } from '../../funcionarios/entities/gerente.entity';
-import { IPessoa } from '../../common/interfaces/pessoa.interface';
+import { Contas } from "../../../contas/entities/conta.entity";
+import { IPessoa } from "../../../common/interfaces/pessoa.interface";
+import { Gerente } from "../../../funcionarios/entities/gerente.entity";
 
 export class Cliente implements IPessoa {
   id?: string;
