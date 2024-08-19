@@ -1,5 +1,6 @@
-import { Cliente } from "../entities/cliente.entity";
-import { UpdateClienteDto } from "../dto/update-cliente.dto";
+import { UpdateClienteDto } from "../../domain/dto/update-cliente.dto";
+import { Cliente } from "../../domain/entities/cliente.entity";
+
 
 export interface IClienteService {
     listarTodos(): Cliente[];

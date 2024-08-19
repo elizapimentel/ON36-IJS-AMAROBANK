@@ -3,19 +3,19 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Funcionario } from 'src/funcionarios/entities/funcionario.entity';
+import { Funcionario } from '../../funcionarios/entities/funcionario.entity';
 import { Contas } from '../entities/conta.entity';
 import { CreateContaCorrenteDto } from '../dto/create/create-conta-corrente.dto';
 import { CreateContaPoupancaDto } from '../dto/create/create-conta-poupanca.dto';
-import { ContasFactory } from 'src/factories/contas.factory';
+import { ContasFactory } from '../../factories/contas/contas.factory';
 import { TipoCargo, TipoConta, TipoTransacao } from '../../common/enums/tipo-.banco.enum';
 import { ContasRepository } from '../repository/contas.repository';
 import { ContaCorrente } from '../entities/conta-corrente.entity';
 import { ContaPoupanca } from '../entities/conta-poupanca.entity';
 import { TransacoesRepository } from '../../transacoes/repository/transacoes.repository';
 import { IContaService } from './IContasService.interface';
-import { CriarTransactionDto } from 'src/transacoes/dto/create-transaction.dto';
-import { TransacoesFactory } from '../../factories/transacoes.factory';
+import { CriarTransactionDto } from '../../transacoes/dto/create-transaction.dto';
+import { TransacoesFactory } from '../../factories/transacoes/transacoes.factory';
 import { randomUUID as uuid } from 'crypto';
 
 @Injectable()

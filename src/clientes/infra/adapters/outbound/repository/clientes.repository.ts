@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Cliente } from '../entities/cliente.entity';
 import { randomUUID as uuid } from 'crypto';
+import { Cliente } from '../../../../domain/entities/cliente.entity';
 
 @Injectable()
 export class ClientesRepository {

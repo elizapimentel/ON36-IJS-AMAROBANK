@@ -1,13 +1,13 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { CreateClienteDto } from '../dto/create-cliente.dto';
-import { UpdateClienteDto } from '../dto/update-cliente.dto';
-import { Cliente } from '../entities/cliente.entity';
-import { Funcionario } from '../../funcionarios/entities/funcionario.entity';
-import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
-import { ClientesRepository } from '../repository/clientes.repository';
-import { FuncionariosRepository } from '../../funcionarios/repository/funcionario.repository';
-import { Gerente } from '../../funcionarios/entities/gerente.entity';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { IClienteService } from './IClienteService.interface';
+import { Cliente } from '../../../clientes/domain/entities/cliente.entity';
+import { ClientesRepository } from '../../../clientes/infra/adapters/outbound/repository/clientes.repository';
+import { FuncionariosRepository } from '../../../funcionarios/repository/funcionario.repository';
+import { CreateClienteDto } from '../../../clientes/domain/dto/create-cliente.dto';
+import { UpdateClienteDto } from '../../../clientes/domain/dto/update-cliente.dto';
+import { TipoCargo } from '../../../common/enums/tipo-.banco.enum';
+import { Funcionario } from '../../../funcionarios/entities/funcionario.entity';
+import { Gerente } from '../../../funcionarios/entities/gerente.entity';
 
 
 @Injectable()
