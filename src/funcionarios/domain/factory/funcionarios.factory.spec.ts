@@ -1,6 +1,6 @@
 import { FuncionariosFactory } from '../funcionarios/funcionarios.factory';
 import { CreateFuncionarioDto } from '../../funcionarios/dto/create-funcionario.dto';
-import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
+import { TipoCargo } from '../../../common/enums/tipo-.banco.enum';
 import { Agente } from '../../funcionarios/entities/agente.entity';
 import { Gerente } from '../../funcionarios/entities/gerente.entity';
 

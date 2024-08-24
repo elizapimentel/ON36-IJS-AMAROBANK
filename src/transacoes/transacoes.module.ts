@@ -1,5 +1,5 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { TransacoesController } from './controller/transacoes.controller';
+import { TransacoesController } from './infra/adapters/inbound/controller/transacoes.controller';
 import { TransacoesService } from './service/transacoes.service';
 import { ContasModule } from '../contas/contas.module';
 import { TransacoesFactory } from '../factories/transacoes/transacoes.factory';
