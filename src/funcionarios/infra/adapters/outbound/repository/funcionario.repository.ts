@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID as uuid } from 'crypto';
-import { Funcionario } from '../entities/funcionario.entity';
-import { Gerente } from '../entities/gerente.entity';
+import { Funcionario } from '../../../../../funcionarios/domain/entities/funcionario.entity';
+import { Gerente } from '../../../../../funcionarios/domain/entities/gerente.entity';
+
 
 @Injectable()
 export class FuncionariosRepository {

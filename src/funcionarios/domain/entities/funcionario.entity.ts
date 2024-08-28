@@ -1,6 +1,7 @@
-import { Cliente } from '../../clientes/domain/entities/cliente.entity';
-import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
-import { IPessoa } from '../../common/interfaces/pessoa.interface';
+import { Cliente } from "../../../clientes/domain/entities/cliente.entity";
+import { TipoCargo } from "../../../common/enums/tipo-.banco.enum";
+import { IPessoa } from "../../../common/interfaces/pessoa.interface";
+
 
 export class Funcionario implements IPessoa {
   id?: string;

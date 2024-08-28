@@ -1,6 +1,7 @@
+import { Cliente } from '../../../clientes/domain/entities/cliente.entity';
+import { TipoCargo } from '../../../common/enums/tipo-.banco.enum';
 import { Funcionario } from './funcionario.entity';
-import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
-import { Cliente } from '../../clientes/domain/entities/cliente.entity';
+
 
 export class Gerente extends Funcionario {
   clientes: Cliente[];

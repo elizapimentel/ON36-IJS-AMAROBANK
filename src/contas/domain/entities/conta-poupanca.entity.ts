@@ -1,4 +1,4 @@
-import { Transacao } from '../../transacoes/entities/transacao.entity';
+import { Transacao } from '../../../transacoes/domain/entities/transacao.entity';
 import { Contas } from './conta.entity';
 
 const TAXA_JUROS_MENSAL = 0.5 / 100;

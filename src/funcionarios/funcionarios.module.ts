@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { FuncionariosController } from './infra/adapters/inbound/controller/funcionarios.controller';
-import { FuncionariosService } from './service/funcionarios.service';
 import { ClientesModule } from '../clientes/clientes.module';
-import { FuncionariosRepository } from './repository/funcionario.repository';
-import { FuncionariosFactory } from '../factories/funcionarios/funcionarios.factory';
+import { FuncionariosService } from './application/ports/input/service/funcionarios.service';
+import { FuncionariosFactory } from './domain/factory/funcionarios.factory';
+import { FuncionariosRepository } from './infra/adapters/outbound/repository/funcionario.repository';
+
 
 @Module({
   imports: [ClientesModule],

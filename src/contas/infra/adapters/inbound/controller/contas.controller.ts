@@ -6,11 +6,11 @@ import {
   Delete,
   Get,
 } from '@nestjs/common';
-import { ContasService } from '../services/contas.service';
 import { CreateContaCorrenteDto } from '../dto/create/create-conta-corrente.dto';
 import { CreateContaPoupancaDto } from '../dto/create/create-conta-poupanca.dto';
-import { Gerente } from '../../../../../funcionarios/entities/gerente.entity';
 import { TipoCargo } from '../../../../../common/enums/tipo-.banco.enum';
+import { ContasService } from '../../../../../contas/application/ports/input/services/contas.service';
+import { Gerente } from '../../../../../funcionarios/domain/entities/gerente.entity';
 
 @Controller('contas')
 export class ContasController {

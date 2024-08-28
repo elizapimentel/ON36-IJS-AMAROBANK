@@ -1,8 +1,9 @@
-import { FuncionariosFactory } from '../funcionarios/funcionarios.factory';
-import { CreateFuncionarioDto } from '../../funcionarios/dto/create-funcionario.dto';
-import { TipoCargo } from '../../../common/enums/tipo-.banco.enum';
-import { Agente } from '../../funcionarios/entities/agente.entity';
-import { Gerente } from '../../funcionarios/entities/gerente.entity';
+import { TipoCargo } from "../../../common/enums/tipo-.banco.enum";
+import { CreateFuncionarioDto } from "../../../funcionarios/infra/adapters/inbound/dto/create-funcionario.dto";
+import { Agente } from "../entities/agente.entity";
+import { Gerente } from "../entities/gerente.entity";
+import { FuncionariosFactory } from "./funcionarios.factory";
+
 
 describe('FuncionariosFactory', () => {
 

@@ -1,5 +1,6 @@
-import { TipoConta } from '../../common/enums/tipo-.banco.enum';
-import { Transacao } from '../../transacoes/entities/transacao.entity';
+import { TipoConta } from "../../../common/enums/tipo-.banco.enum";
+import { Transacao } from "../../../transacoes/domain/entities/transacao.entity";
+
 
 export class Contas {
     id?: string;

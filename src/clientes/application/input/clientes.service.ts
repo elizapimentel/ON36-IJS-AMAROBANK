@@ -2,12 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { IClienteService } from './IClienteService.interface';
 import { Cliente } from '../../../clientes/domain/entities/cliente.entity';
 import { ClientesRepository } from '../../../clientes/infra/adapters/outbound/repository/clientes.repository';
-import { FuncionariosRepository } from '../../../funcionarios/repository/funcionario.repository';
-import { CreateClienteDto } from '../../../clientes/domain/dto/create-cliente.dto';
-import { UpdateClienteDto } from '../../../clientes/domain/dto/update-cliente.dto';
+import { CreateClienteDto } from '../../../clientes/infra/adapters/inbound/dto/create-cliente.dto';
+import { UpdateClienteDto } from '../../../clientes/infra/adapters/inbound/dto/update-cliente.dto';
 import { TipoCargo } from '../../../common/enums/tipo-.banco.enum';
-import { Funcionario } from '../../../funcionarios/entities/funcionario.entity';
-import { Gerente } from '../../../funcionarios/entities/gerente.entity';
+import { Funcionario } from '../../../funcionarios/domain/entities/funcionario.entity';
+import { Gerente } from '../../../funcionarios/domain/entities/gerente.entity';
+import { FuncionariosRepository } from '../../../funcionarios/infra/adapters/outbound/repository/funcionario.repository';
+
 
 
 @Injectable()

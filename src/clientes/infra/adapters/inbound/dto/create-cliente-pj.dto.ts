@@ -1,4 +1,4 @@
-import { Cliente } from "../entities/cliente.entity";
+import { Cliente } from "../../../../../clientes/domain/entities/cliente.entity";
 
 export class CreateClientePJDto {
     readonly razaSocial: string;

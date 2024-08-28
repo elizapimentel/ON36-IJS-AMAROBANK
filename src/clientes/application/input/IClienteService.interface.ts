@@ -1,4 +1,4 @@
-import { UpdateClienteDto } from "../../domain/dto/update-cliente.dto";
+import { UpdateClienteDto } from "../../../clientes/infra/adapters/inbound/dto/update-cliente.dto";
 import { Cliente } from "../../domain/entities/cliente.entity";
 
 

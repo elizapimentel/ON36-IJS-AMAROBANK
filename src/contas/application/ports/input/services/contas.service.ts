@@ -3,20 +3,20 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Funcionario } from '../../funcionarios/entities/funcionario.entity';
-import { Contas } from '../entities/conta.entity';
-import { CreateContaCorrenteDto } from '../dto/create/create-conta-corrente.dto';
-import { CreateContaPoupancaDto } from '../dto/create/create-conta-poupanca.dto';
-import { ContasFactory } from '../../factories/contas/contas.factory';
-import { TipoCargo, TipoConta, TipoTransacao } from '../../common/enums/tipo-.banco.enum';
-import { ContasRepository } from '../repository/contas.repository';
-import { ContaCorrente } from '../entities/conta-corrente.entity';
-import { ContaPoupanca } from '../entities/conta-poupanca.entity';
-import { TransacoesRepository } from '../../transacoes/repository/transacoes.repository';
-import { IContaService } from './IContasService.interface';
-import { CriarTransactionDto } from '../../transacoes/dto/create-transaction.dto';
-import { TransacoesFactory } from '../../factories/transacoes/transacoes.factory';
 import { randomUUID as uuid } from 'crypto';
+import { TipoCargo, TipoConta, TipoTransacao } from '../../../../../common/enums/tipo-.banco.enum';
+import { ContaCorrente } from '../../../../../contas/domain/entities/conta-corrente.entity';
+import { ContaPoupanca } from '../../../../../contas/domain/entities/conta-poupanca.entity';
+import { Contas } from '../../../../../contas/domain/entities/conta.entity';
+import { ContasFactory } from '../../../../../contas/domain/factory/contas.factory';
+import { CreateContaCorrenteDto } from '../../../../../contas/infra/adapters/inbound/dto/create/create-conta-corrente.dto';
+import { CreateContaPoupancaDto } from '../../../../../contas/infra/adapters/inbound/dto/create/create-conta-poupanca.dto';
+import { ContasRepository } from '../../../../../contas/infra/adapters/outbound/repository/contas.repository';
+import { Funcionario } from '../../../../../funcionarios/domain/entities/funcionario.entity';
+import { CriarTransactionDto } from '../../../../../transacoes/infra/adapters/inbound/dto/create-transaction.dto';
+import { TransacoesRepository } from '../../../../../transacoes/infra/adapters/outbound/repository/transacoes.repository';
+import { IContaService } from './IContasService.interface';
+import { TransacoesFactory } from '../../../../../transacoes/domain/factory/transacoes.factory';
 
 @Injectable()
 export class ContasService implements IContaService {

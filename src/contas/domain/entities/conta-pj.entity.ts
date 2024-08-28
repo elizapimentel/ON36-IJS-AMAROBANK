@@ -1,4 +1,4 @@
-import { Transacao } from "../../transacoes/entities/transacao.entity";
+import { Transacao } from "../../../transacoes/domain/entities/transacao.entity";
 import { ContaCorrente } from "./conta-corrente.entity"; 
 
 export class ContaPJ extends ContaCorrente {

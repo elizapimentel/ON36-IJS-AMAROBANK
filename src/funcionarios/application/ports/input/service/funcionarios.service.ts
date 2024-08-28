@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Funcionario } from '../entities/funcionario.entity';
-import { CreateFuncionarioDto } from '../dto/create-funcionario.dto';
-import { FuncionariosFactory } from '../../factories/funcionarios/funcionarios.factory';
-import { FuncionariosRepository } from '../repository/funcionario.repository';
-import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
-import { Gerente } from '../entities/gerente.entity';
+import { TipoCargo } from '../../../../../common/enums/tipo-.banco.enum';
+import { Funcionario } from '../../../../../funcionarios/domain/entities/funcionario.entity';
+import { Gerente } from '../../../../../funcionarios/domain/entities/gerente.entity';
+import { FuncionariosFactory } from '../../../../../funcionarios/domain/factory/funcionarios.factory';
+import { CreateFuncionarioDto } from '../../../../../funcionarios/infra/adapters/inbound/dto/create-funcionario.dto';
+import { FuncionariosRepository } from '../../../../../funcionarios/infra/adapters/outbound/repository/funcionario.repository';
+
 
 @Injectable()
 export class FuncionariosService {

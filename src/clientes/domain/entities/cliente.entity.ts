@@ -1,6 +1,7 @@
-import { Contas } from "../../../contas/entities/conta.entity";
 import { IPessoa } from "../../../common/interfaces/pessoa.interface";
-import { Gerente } from "../../../funcionarios/entities/gerente.entity";
+import { Contas } from "../../../contas/domain/entities/conta.entity";
+import { Gerente } from "../../../funcionarios/domain/entities/gerente.entity";
+
 
 export class Cliente implements IPessoa {
   id?: string;

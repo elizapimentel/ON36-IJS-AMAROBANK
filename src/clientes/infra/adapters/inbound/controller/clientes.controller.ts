@@ -7,10 +7,11 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ClientesService } from '../../../../application/service/clientes.service';
-import { CreateClienteDto } from '../../../../domain/dto/create-cliente.dto';
-import { UpdateClienteDto } from '../../../../domain/dto/update-cliente.dto';
-import { Gerente } from '../../../../../funcionarios/entities/gerente.entity';
+import { ClientesService } from '../../../../../clientes/application/input/clientes.service';
+import { Gerente } from '../../../../../funcionarios/domain/entities/gerente.entity';
+import { CreateClienteDto } from '../dto/create-cliente.dto';
+import { UpdateClienteDto } from '../dto/update-cliente.dto';
+
 
 @Controller('clientes')
 export class ClientesController {

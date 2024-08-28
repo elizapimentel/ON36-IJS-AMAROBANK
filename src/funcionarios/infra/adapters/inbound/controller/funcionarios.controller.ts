@@ -5,11 +5,13 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { FuncionariosService } from '../service/funcionarios.service';
-import { CreateFuncionarioDto } from '../../../../dto/create-funcionario.dto';
-import { Funcionario } from '../entities/funcionario.entity';
+
 import { TipoCargo } from '../../../../../common/enums/tipo-.banco.enum';
-import { Gerente } from '../entities/gerente.entity';
+import { FuncionariosService } from '../../../../../funcionarios/application/ports/input/service/funcionarios.service';
+import { Funcionario } from '../../../../../funcionarios/domain/entities/funcionario.entity';
+import { Gerente } from '../../../../../funcionarios/domain/entities/gerente.entity';
+import { CreateFuncionarioDto } from '../dto/create-funcionario.dto';
+
 
 @Controller('funcionarios')
 export class FuncionariosController {

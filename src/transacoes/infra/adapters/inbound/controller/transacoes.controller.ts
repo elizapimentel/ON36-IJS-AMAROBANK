@@ -3,8 +3,9 @@ import {
   Get,
   Param,
 } from '@nestjs/common';
-import { TransacoesService } from '../service/transacoes.service';
-import { Transacao } from '../entities/transacao.entity';
+import { TransacoesService } from '../../../../../transacoes/application/ports/input/service/transacoes.service';
+import { Transacao } from '../../../../../transacoes/domain/entities/transacao.entity';
+
 
 @Controller('transacoes')
 export class TransacoesController {
