@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientesRepository } from './infra/adapters/outbound/repository/clientes.repository';
-import { Contas } from '../contas/domain/entities/conta.entity';
+import { Contas } from '../contas/domain/models/conta';
 import { Gerente } from '../funcionarios/domain/entities/gerente.entity';
 import { FuncionariosRepository } from '../funcionarios/infra/adapters/outbound/repository/funcionario.repository';
 import { ClientesService } from './application/input/clientes.service';
