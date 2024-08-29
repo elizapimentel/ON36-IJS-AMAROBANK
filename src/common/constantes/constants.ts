@@ -1,0 +1,1 @@
+export const TAXA_JUROS_MENSAL = 0.5 / 100;
