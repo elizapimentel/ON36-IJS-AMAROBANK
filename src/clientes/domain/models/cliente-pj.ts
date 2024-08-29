@@ -1,7 +1,7 @@
 import { IPessoa } from '../../../common/interfaces/pessoa.interface';
-import { Contas } from '../../../contas/domain/entities/conta.entity';
-import { Gerente } from '../../../funcionarios/domain/entities/gerente.entity';
-import { Cliente } from './cliente.entity';
+import { Contas } from '../../../contas/domain/models/conta';
+import { Gerente } from '../../../funcionarios/domain/models/gerente.entity
+import { Cliente } from './cliente';
 import { randomUUID as uuid } from 'crypto';
 
 export class ClientePJ implements IPessoa {
