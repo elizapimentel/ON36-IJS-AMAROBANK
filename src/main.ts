@@ -9,7 +9,7 @@ async function bootstrap() {
     console.log('Data Source has been initialized!');
   } catch (error) {
     console.error('Error during Data Source initialization:', error);
-    process.exit(1); // Encerra o processo se a inicialização falhar
+    process.exit(1); 
   }
 
   const app = await NestFactory.create(AppModule);
