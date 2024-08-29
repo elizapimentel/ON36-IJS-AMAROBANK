@@ -6,16 +6,16 @@ import {
   Post,
 } from '@nestjs/common';
 import { FuncionariosService } from '../service/funcionarios.service';
-import { CreateFuncionarioDto } from '../dto/create-funcionario.dto';
+import { CreateFuncionarioDto } from '../../../../dto/create-funcionario.dto';
 import { Funcionario } from '../entities/funcionario.entity';
-import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
+import { TipoCargo } from '../../../../../common/enums/tipo-.banco.enum';
 import { Gerente } from '../entities/gerente.entity';
 
 @Controller('funcionarios')
 export class FuncionariosController {
   constructor(
     private readonly funcionarioService: FuncionariosService
-    ) {}
+  ) { }
 
   @Post()
   cadastrarFuncionario(
@@ -40,21 +40,21 @@ export class FuncionariosController {
     return this.funcionarioService.findGerenteById(id);
   }
 
- /*  @Patch(':id')
-  atualizarFuncionario(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateFuncionarioDto: UpdateFuncionarioDto,
-  ) {
-    return this.funcionarioService.atualizarDadosFuncionario(
-      +id,
-      updateFuncionarioDto,
-    );
-  }
-
-  @Delete(':id')
-  removerFuncionario(@Param('id', ParseIntPipe) id: number) {
-    return this.funcionarioService.removerFuncionario(+id);
-  }
-
-   */
+  /*  @Patch(':id')
+   atualizarFuncionario(
+     @Param('id', ParseIntPipe) id: number,
+     @Body() updateFuncionarioDto: UpdateFuncionarioDto,
+   ) {
+     return this.funcionarioService.atualizarDadosFuncionario(
+       +id,
+       updateFuncionarioDto,
+     );
+   }
+ 
+   @Delete(':id')
+   removerFuncionario(@Param('id', ParseIntPipe) id: number) {
+     return this.funcionarioService.removerFuncionario(+id);
+   }
+ 
+    */
 }

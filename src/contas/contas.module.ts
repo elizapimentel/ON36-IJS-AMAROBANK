@@ -1,6 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { ContasService } from './services/contas.service';
-import { ContasController } from './controller/contas.controller';
+import { ContasController } from './infra/adapters/inbound/controller/contas.controller';
 import { TransacoesModule } from '../transacoes/transacoes.module';
 import { TransacoesRepository } from '../transacoes/repository/transacoes.repository';
 import { ContasRepository } from './repository/contas.repository';
