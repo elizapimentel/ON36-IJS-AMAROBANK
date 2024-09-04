@@ -1,62 +1,66 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Inject,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 
 import { TipoCargo } from '../../../../../common/enums/tipo-.banco.enum';
-import { FuncionariosService } from '../../../../../funcionarios/application/ports/input/service/funcionarios.service';
-import { Funcionario } from '../../../../../funcionarios/domain/entities/funcionario.entity';
-import { Gerente } from '../../../../../funcionarios/domain/entities/gerente.entity';
 import { CreateFuncionarioDto } from '../dto/create-funcionario.dto';
+import { FuncionarioEntity } from '../../entities/funcionario.entity';
+import { UUID } from 'crypto';
+import { IFuncionarioService } from '../../../../../funcionarios/application/ports/input/service/IFuncionario.service';
+import { UpdateFuncionarioDto } from '../dto/update-funcionario.dto';
 
 
 @Controller('funcionarios')
 export class FuncionariosController {
   constructor(
-    private readonly funcionarioService: FuncionariosService
+    @Inject(IFuncionarioService) 
+    private readonly funcionarioService: IFuncionarioService,
   ) { }
 
   @Post()
   cadastrarFuncionario(
     @Body('cargo') cargo: TipoCargo,
     @Body('funcionario') createFuncionarioDto: CreateFuncionarioDto
-  ): Funcionario {
+  ): Promise<FuncionarioEntity> {
     return this.funcionarioService.cadastrarFuncionario(cargo, createFuncionarioDto);
   }
 
   @Get()
-  findAll(): Funcionario[] {
-    return this.funcionarioService.findAll();
+  findAll(): Promise<FuncionarioEntity[]> {
+    return this.funcionarioService.listarTodos();
   }
 
   @Get(':id')
-  findGerenteById(@Param('id') id: string): Gerente | undefined {
-    return this.funcionarioService.findGerenteById(id);
+  findFuncionarioById(@Param('id') id: UUID): Promise<FuncionarioEntity | undefined> {
+    return this.funcionarioService.findFuncionarioById(id);
   }
 
-  @Get(':id')
-  findFuncionarioById(@Param('id') id: string): Funcionario | undefined {
-    return this.funcionarioService.findGerenteById(id);
+  @Get('/cargo/:cargo')
+  findFuncionarioByCargo(@Param('cargo') cargo: TipoCargo): Promise<FuncionarioEntity[]> {
+    return this.funcionarioService.findFuncionarioByCargo(cargo);
   }
 
-  /*  @Patch(':id')
+  @Patch(':id')
    atualizarFuncionario(
-     @Param('id', ParseIntPipe) id: number,
+     @Param('id') id: UUID,
      @Body() updateFuncionarioDto: UpdateFuncionarioDto,
-   ) {
+   ): Promise<FuncionarioEntity> {
      return this.funcionarioService.atualizarDadosFuncionario(
-       +id,
+       id,
        updateFuncionarioDto,
      );
    }
  
    @Delete(':id')
-   removerFuncionario(@Param('id', ParseIntPipe) id: number) {
-     return this.funcionarioService.removerFuncionario(+id);
+   removerFuncionario(@Param('id') id: UUID): Promise<void> {
+     return this.funcionarioService.removerFuncionario(id);
    }
- 
-    */
+
 }
