@@ -1,4 +1,5 @@
-import { Cliente } from "../../../../../clientes/domain/entities/cliente.entity";
+import { GerenteEntity } from "../../../../../funcionarios/infra/adapters/entities/gerente.entity";
+import { ClienteEntity } from "../../entities/cliente.entity";
 
 export class CreateClientePJDto {
     readonly razaSocial: string;
@@ -6,6 +7,6 @@ export class CreateClientePJDto {
     readonly telefones: string[];
     readonly cnpj: string;
     readonly areAtuacao: string;
-    readonly donos_socios: Cliente[];
-    readonly gerenteId?: string;
+    readonly donos_socios: ClienteEntity[];
+    readonly gerenteId?: GerenteEntity;
 }
