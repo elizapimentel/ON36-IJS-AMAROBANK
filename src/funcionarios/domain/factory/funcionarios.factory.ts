@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { TipoCargo } from '../../../common/enums/tipo-.banco.enum';
 import { CreateFuncionarioDto } from '../../../funcionarios/infra/adapters/inbound/dto/create-funcionario.dto';
-import { AgenteEntity } from 'src/funcionarios/infra/adapters/entities/agente.entity';
-import { FuncionarioEntity } from 'src/funcionarios/infra/adapters/entities/funcionario.entity';
-import { GerenteEntity } from 'src/funcionarios/infra/adapters/entities/gerente.entity';
+import { AgenteEntity } from '../../../funcionarios/infra/adapters/entities/agente.entity';
+import { FuncionarioEntity } from '../../../funcionarios/infra/adapters/entities/funcionario.entity';
+import { GerenteEntity } from '../../../funcionarios/infra/adapters/entities/gerente.entity';
 
 
 
