@@ -1,75 +1,80 @@
-import { Injectable } from '@nestjs/common';
-import { Funcionario } from '../entities/funcionario.entity';
-import { CreateFuncionarioDto } from '../dto/create-funcionario.dto';
-import { FuncionariosFactory } from '../../factories/funcionarios/funcionarios.factory';
-import { FuncionariosRepository } from '../repository/funcionario.repository';
-import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
-import { Gerente } from '../entities/gerente.entity';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { TipoCargo } from '../../../../../common/enums/tipo-.banco.enum';
+import { FuncionariosFactory } from '../../../../../funcionarios/domain/factory/funcionarios.factory';
+import { CreateFuncionarioDto } from '../../../../../funcionarios/infra/adapters/inbound/dto/create-funcionario.dto';
+import { FuncionariosRepository } from '../../../../../funcionarios/infra/adapters/outbound/repository/funcionario.repository';
+import { IFuncionarioService } from './IFuncionario.service';
+import { FuncionarioEntity } from '../../../../../funcionarios/infra/adapters/entities/funcionario.entity';
+import { UpdateFuncionarioDto } from '../../../../../funcionarios/infra/adapters/inbound/dto/update-funcionario.dto';
+import { UUID } from 'crypto';
+
 
 @Injectable()
-export class FuncionariosService {
+export class FuncionariosService implements IFuncionarioService {
   constructor(
     private funcionarioRepo: FuncionariosRepository,
     private funcionatrioFactory: FuncionariosFactory,
-  ) {}
+  ) { }
 
   cadastrarFuncionario(
     type: TipoCargo,
     funcionario: CreateFuncionarioDto,
-  ): Funcionario {
+  ): Promise<FuncionarioEntity> {
     const funcionarios = this.funcionatrioFactory.criarFuncionario(
       type,
       funcionario,
     );
-    return this.funcionarioRepo.cadastrarFuncionario(funcionarios);
+    return this.funcionarioRepo.save(funcionarios);
   }
 
-  findAll(): Funcionario[] {
-    return this.funcionarioRepo.listarTodos();
+  async listarTodos(): Promise<FuncionarioEntity[]> {
+    return this.funcionarioRepo.find();
   }
 
-  findGerenteById(id: string): Gerente | undefined{
-    return this.funcionarioRepo.buscarGerentePorId(id);
+  async findFuncionarioById(id: UUID): Promise<FuncionarioEntity | undefined> {
+    const funcionario = await this.funcionarioRepo.findOne({
+      where: { id: id },
+    });
+    if (!funcionario) {
+      throw new NotFoundException(`Funcionário com id ${id} não encontrado`);
+    }
+    return funcionario;
   }
 
-  findFuncionarioById(id: string): Funcionario | undefined{
-    return this.funcionarioRepo.buscarFuncionarioPorId(id);
+  async findFuncionarioByCargo(cargo: TipoCargo): Promise<FuncionarioEntity[]> {
+    const funcionarios = await this.funcionarioRepo.find({
+      where: { cargo: cargo },
+    });
+    if (!funcionarios) {
+      throw new NotFoundException(`Funcionário com cargo ${cargo} não encontrado`);
+    }
+    return funcionarios;
   }
 
-  //update
-  /* atualizarDadosFuncionario(
-    id: number,
+  async atualizarDadosFuncionario(
+    id: UUID,
     updateFuncionario: UpdateFuncionarioDto,
-  ): Funcionario {
-    const funcionarios = this.readFuncionarios();
-    const funcionarioIndex = funcionarios.findIndex((f) => f.id === id);
-
-    if (funcionarioIndex === -1) {
-      throw new NotFoundException(`Funcionario com ID ${id} não encontrado`);
+  ): Promise<FuncionarioEntity> {
+    const funcionario = await this.funcionarioRepo.findOne({
+      where: { id: id },
+    });
+    if (!funcionario) {
+      throw new NotFoundException(`Funcionário com id ${id} não encontrado`);
     }
 
-    const atualizarFuncionario = {
-      ...funcionarios[funcionarioIndex],
-      ...updateFuncionario,
-    };
-    funcionarios[funcionarioIndex] = atualizarFuncionario;
-    this.writeFuncionarios(funcionarios);
-    return atualizarFuncionario;
+    funcionario.nomeCompleto = updateFuncionario.nomeCompleto || funcionario.nomeCompleto;
+    funcionario.endereco = updateFuncionario.endereco || funcionario.endereco;
+    funcionario.telefones = updateFuncionario.telefones || funcionario.telefones;
+    funcionario.cargo = updateFuncionario.cargo || funcionario.cargo;
+
+    return this.funcionarioRepo.save(funcionario);
+
   }
 
-  // Delete
-  removerFuncionario(id: number): void {
-    const funcionarios = this.readFuncionarios();
-    const updatedFuncionarios = funcionarios.filter((f) => f.id !== id);
+  async removerFuncionario(id: UUID): Promise<void> {
+    const funcionario = await this.findFuncionarioById(id);
+    await this.funcionarioRepo.remove(funcionario);
 
-    if (funcionarios.length === updatedFuncionarios.length) {
-      throw new NotFoundException(`Funcionario com ID ${id} não encontrado`);
-    }
-
-    funcionarios.splice(id, 1);
-    this.writeFuncionarios(updatedFuncionarios);
   }
 
-
-  } */
 }

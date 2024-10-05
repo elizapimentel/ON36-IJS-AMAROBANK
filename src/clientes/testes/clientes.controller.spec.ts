@@ -1,14 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Gerente } from '../../funcionarios/entities/gerente.entity';
 import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../app.module';
 import * as request from 'supertest';
 import { ClientesController } from '../infra/adapters/inbound/controller/clientes.controller';
-import { ClientesService } from '../application/service/clientes.service';
 import { Cliente } from '../domain/entities/cliente.entity';
-import { CreateClienteDto } from '../domain/dto/create-cliente.dto';
-import { UpdateClienteDto } from '../domain/dto/update-cliente.dto';
+import { Gerente } from '../../funcionarios/domain/entities/gerente.entity';
+import { ClientesService } from '../application/input/clientes.service';
+import { CreateClienteDto } from '../infra/adapters/inbound/dto/create-cliente.dto';
+import { UpdateClienteDto } from '../infra/adapters/inbound/dto/update-cliente.dto';
+
+
 
 describe('Clientes Controller', () => {
   let controller: ClientesController;

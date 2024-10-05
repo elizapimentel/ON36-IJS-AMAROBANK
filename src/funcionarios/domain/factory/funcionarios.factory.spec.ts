@@ -1,8 +1,9 @@
-import { FuncionariosFactory } from '../funcionarios/funcionarios.factory';
-import { CreateFuncionarioDto } from '../../funcionarios/dto/create-funcionario.dto';
-import { TipoCargo } from '../../../common/enums/tipo-.banco.enum';
-import { Agente } from '../../funcionarios/entities/agente.entity';
-import { Gerente } from '../../funcionarios/entities/gerente.entity';
+import { AgenteEntity } from "../../../funcionarios/infra/adapters/entities/agente.entity";
+import { TipoCargo } from "../../../common/enums/tipo-.banco.enum";
+import { CreateFuncionarioDto } from "../../../funcionarios/infra/adapters/inbound/dto/create-funcionario.dto";
+import { FuncionariosFactory } from "./funcionarios.factory";
+import { GerenteEntity } from "../../../funcionarios/infra/adapters/entities/gerente.entity";
+
 
 describe('FuncionariosFactory', () => {
 
@@ -26,8 +27,7 @@ describe('FuncionariosFactory', () => {
       funcionarioDto,
     );
 
-    expect(retornado).toBeInstanceOf(Agente);
-    expect(retornado.cargo).toBe(TipoCargo.AGENTE);
+    expect(retornado).toBeInstanceOf(AgenteEntity);
     expect(retornado.nomeCompleto).toBe('Maria da Silva');
     expect(retornado.endereco).toBe('Rua 2, 123');
     expect(retornado.telefones).toEqual(['(11) 98765-4321']);
@@ -41,12 +41,10 @@ describe('FuncionariosFactory', () => {
       funcionarioDto,
     );
 
-    expect(retornado).toBeInstanceOf(Gerente);
-    expect(retornado.cargo).toBe(TipoCargo.GERENTE);
+    expect(retornado).toBeInstanceOf(GerenteEntity);
     expect(retornado.nomeCompleto).toBe('Maria da Silva');
     expect(retornado.endereco).toBe('Rua 2, 123');
     expect(retornado.telefones).toEqual(['(11) 98765-4321']);
-    expect(retornado.clientes).toEqual([]); // Verifica se a lista de clientes foi inicializada corretamente
   });
 
   test('deve retornar um erro quando tipo inválido', () => {

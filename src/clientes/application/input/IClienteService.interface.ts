@@ -1,10 +1,13 @@
-import { UpdateClienteDto } from "../../domain/dto/update-cliente.dto";
-import { Cliente } from "../../domain/entities/cliente.entity";
+import { UpdateClienteDto } from "../../../clientes/infra/adapters/inbound/dto/update-cliente.dto";
+import { ClienteEntity } from "../../../clientes/infra/adapters/entities/cliente.entity";
+import { UUID } from "crypto";
 
 
 export interface IClienteService {
-    listarTodos(): Cliente[];
-    encontrarPorId(id: string): Cliente;
-    atualizarCliente(id: string, updateClienteDto: UpdateClienteDto): Cliente;
-    removerCliente(id: string): void;
+    encontrarPorId(id: UUID): Promise<ClienteEntity>;
+    atualizarCliente(id: UUID, updateClienteDto: UpdateClienteDto): Promise<ClienteEntity>;
+    removerCliente(id: UUID): Promise<void>;
+    
 }
+
+export const IClienteService = Symbol('IClienteService');

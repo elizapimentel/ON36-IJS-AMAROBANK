@@ -1,45 +1,39 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
   Delete,
+  Inject,
 } from '@nestjs/common';
-import { ClientesService } from '../../../../application/service/clientes.service';
-import { CreateClienteDto } from '../../../../domain/dto/create-cliente.dto';
-import { UpdateClienteDto } from '../../../../domain/dto/update-cliente.dto';
-import { Gerente } from '../../../../../funcionarios/entities/gerente.entity';
+import { UpdateClienteDto } from '../dto/update-cliente.dto';
+import { ClienteEntity } from '../../../../../clientes/infra/adapters/entities/cliente.entity'; 
+import { IClienteService } from '../../../../../clientes/application/input/IClienteService.interface';
+import { UUID } from 'crypto';
 
 @Controller('clientes')
 export class ClientesController {
-  constructor(private readonly clientesService: ClientesService) { }
-
-  @Post()
-  create(@Body() cliente: CreateClienteDto, funcionario: Gerente) {
-    // const cliente: IPessoa = { ...createClienteDto };
-    const novoCliente = this.clientesService.cadastrarCliente(funcionario, cliente);
-    return novoCliente;
-  }
-
-  @Get()
-  findAll() {
-    return this.clientesService.listarTodos();
-  }
+  constructor(
+    @Inject(IClienteService) 
+    private readonly clientesService: IClienteService,
+  ) { }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: UUID): Promise<ClienteEntity> {
     return this.clientesService.encontrarPorId(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClienteDto: UpdateClienteDto) {
+  update(
+    @Param('id') id: UUID,
+    @Body() updateClienteDto: UpdateClienteDto
+  ): Promise<ClienteEntity> {
     return this.clientesService.atualizarCliente(id, updateClienteDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.clientesService.removerCliente(id);
+  async remove(@Param('id') id: UUID): Promise<void> {
+    await this.clientesService.removerCliente(id);
   }
 }

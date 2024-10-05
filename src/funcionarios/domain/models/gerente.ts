@@ -1,11 +1,12 @@
-import { Funcionario } from './funcionario.entity';
-import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
-import { Cliente } from '../../clientes/domain/entities/cliente.entity';
+import { Cliente } from '../../../clientes/domain/models/cliente';
+import { TipoCargo } from '../../../common/enums/tipo-.banco.enum';
+import { Funcionario } from './funcionario';
+
 
 export class Gerente extends Funcionario {
   clientes: Cliente[];
 
-   constructor(
+  constructor(
     cargo: TipoCargo,
     nomeCompleto: string,
     endereco: string,

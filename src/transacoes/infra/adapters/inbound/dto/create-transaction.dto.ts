@@ -1,4 +1,4 @@
-import { TipoTransacao } from '../../common/enums/tipo-.banco.enum';
+import { TipoTransacao } from "../../../../../common/enums/tipo-.banco.enum";
 
 export class CriarTransactionDto {
   readonly id: string;

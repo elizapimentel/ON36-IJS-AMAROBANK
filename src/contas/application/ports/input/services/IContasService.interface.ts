@@ -1,7 +1,7 @@
-import { Funcionario } from '../../funcionarios/entities/funcionario.entity';
-import { ContaCorrente } from '../entities/conta-corrente.entity';
-import { ContaPoupanca } from '../entities/conta-poupanca.entity';
-import { Contas } from '../entities/conta.entity';
+import { ContaCorrente } from "../../../../../contas/domain/entities/conta-corrente.entity";
+import { ContaPoupanca } from "../../../../../contas/domain/entities/conta-poupanca.entity";
+import { Contas } from "../../../../../contas/domain/entities/conta.entity";
+import { Funcionario } from "../../../../../funcionarios/domain/entities/funcionario.entity";
 
 export interface IContaService {
   cadastrarContaCorrente(funcionario: Funcionario, conta: ContaCorrente): ContaCorrente;

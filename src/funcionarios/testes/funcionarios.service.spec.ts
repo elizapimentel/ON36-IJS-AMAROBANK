@@ -1,11 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FuncionariosService } from '../service/funcionarios.service';
-import { FuncionariosRepository } from '../repository/funcionario.repository';
-import { FuncionariosFactory } from '../../factories/funcionarios/funcionarios.factory';
 import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
-import { CreateFuncionarioDto } from '../../funcionarios/dto/create-funcionario.dto';
-import { Gerente } from '../../funcionarios/entities/gerente.entity';
-import { Agente } from '../../funcionarios/entities/agente.entity';
+import { FuncionariosService } from '../application/ports/input/service/funcionarios.service';
+import { Agente } from '../domain/entities/agente.entity';
+import { Gerente } from '../domain/entities/gerente.entity';
+import { FuncionariosFactory } from '../domain/factory/funcionarios.factory';
+import { CreateFuncionarioDto } from '../infra/adapters/inbound/dto/create-funcionario.dto';
+import { FuncionariosRepository } from '../infra/adapters/outbound/repository/funcionario.repository';
+
 
 
 describe('FuncionariosService', () => {

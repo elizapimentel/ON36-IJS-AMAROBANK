@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Contas } from '../entities/conta.entity';
-import { ContaCorrente } from '../entities/conta-corrente.entity';
-import { ContaPoupanca } from '../entities/conta-poupanca.entity';
+import { ContaCorrente } from '../../../../../contas/domain/entities/conta-corrente.entity';
+import { ContaPoupanca } from '../../../../../contas/domain/entities/conta-poupanca.entity';
+import { Contas } from '../../../../../contas/domain/entities/conta.entity';
+
 
 @Injectable()
 export class ContasRepository {

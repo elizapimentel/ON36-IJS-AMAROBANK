@@ -1,6 +1,7 @@
-import { Contas } from "../../../contas/entities/conta.entity";
 import { IPessoa } from "../../../common/interfaces/pessoa.interface";
-import { Gerente } from "../../../funcionarios/entities/gerente.entity";
+import { Contas } from "../../../contas/domain/models/conta";
+import { Gerente } from "../../../funcionarios/domain/models/gerente";
+
 
 export class Cliente implements IPessoa {
   id?: string;
@@ -9,6 +10,7 @@ export class Cliente implements IPessoa {
   telefones: string[];
   contas?: Contas[];
   gerente?: Gerente;
+  
   constructor(nomeCompleto: string, endereco: string, telefones: string[]) {
     this.nomeCompleto = nomeCompleto;
     this.endereco = endereco;

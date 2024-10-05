@@ -1,9 +1,10 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TransacoesController } from './infra/adapters/inbound/controller/transacoes.controller';
-import { TransacoesService } from './service/transacoes.service';
 import { ContasModule } from '../contas/contas.module';
-import { TransacoesFactory } from '../factories/transacoes/transacoes.factory';
-import { TransacoesRepository } from './repository/transacoes.repository';
+import { TransacoesService } from './application/ports/input/service/transacoes.service';
+import { TransacoesFactory } from './domain/factory/transacoes.factory';
+import { TransacoesRepository } from './infra/adapters/outbound/repository/transacoes.repository';
+
 
 @Module({
   imports: [forwardRef(() => ContasModule)],

@@ -1,6 +1,7 @@
-import { Cliente } from '../../clientes/domain/entities/cliente.entity';
-import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
-import { IPessoa } from '../../common/interfaces/pessoa.interface';
+import { Cliente } from "../../../clientes/domain/models/cliente";
+import { TipoCargo } from "../../../common/enums/tipo-.banco.enum";
+import { IPessoa } from "../../../common/interfaces/pessoa.interface";
+
 
 export class Funcionario implements IPessoa {
   id?: string;
@@ -8,7 +9,6 @@ export class Funcionario implements IPessoa {
   nomeCompleto: string;
   endereco: string;
   telefones: string[];
-  clientes?: Cliente[];
   constructor(cargo: TipoCargo, nomeFuncionario: string, endereco: string, telefones: string[]) {
     this.cargo = cargo;
     this.nomeCompleto = nomeFuncionario;

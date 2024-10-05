@@ -1,4 +1,5 @@
-import { Transacao } from '../../../transacoes/entities/transacao.entity';
+import { Transacao } from "../../../../../../transacoes/domain/entities/transacao.entity";
+
 
 export class CreateContaDto {
   readonly id?: string;

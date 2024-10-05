@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { TipoCargo } from '../../common/enums/tipo-.banco.enum';
-import { CreateFuncionarioDto } from '../../funcionarios/dto/create-funcionario.dto';
-import { Agente } from '../../funcionarios/entities/agente.entity';
-import { Funcionario } from '../../funcionarios/entities/funcionario.entity';
-import { Gerente } from '../../funcionarios/entities/gerente.entity';
+import { TipoCargo } from '../../../common/enums/tipo-.banco.enum';
+import { CreateFuncionarioDto } from '../../../funcionarios/infra/adapters/inbound/dto/create-funcionario.dto';
+import { AgenteEntity } from '../../../funcionarios/infra/adapters/entities/agente.entity';
+import { FuncionarioEntity } from '../../../funcionarios/infra/adapters/entities/funcionario.entity';
+import { GerenteEntity } from '../../../funcionarios/infra/adapters/entities/gerente.entity';
+
 
 
 @Injectable()
@@ -11,23 +12,21 @@ export class FuncionariosFactory {
   criarFuncionario(
     cargo: TipoCargo,
     funcionario: CreateFuncionarioDto,
-  ): Funcionario {
+  ): FuncionarioEntity {
     switch (cargo) {
       case TipoCargo.AGENTE:
-        return new Agente(
-          funcionario.cargo,
-          funcionario.nomeCompleto,
-          funcionario.endereco,
-          funcionario.telefones,
-        );
+        return new AgenteEntity({
+          nomeCompleto: funcionario.nomeCompleto,
+          endereco: funcionario.endereco,
+          telefones: funcionario.telefones,
+        });
       case TipoCargo.GERENTE:
-        return new Gerente(
-          funcionario.cargo,
-          funcionario.nomeCompleto,
-          funcionario.endereco,
-          funcionario.telefones,
-          funcionario.clientes || [],
-        );
+        return new GerenteEntity({
+          nomeCompleto: funcionario.nomeCompleto,
+          endereco: funcionario.endereco,
+          telefones: funcionario.telefones,
+          clientes: funcionario.clientes || [],
+        });
       default:
         throw new Error('Cargo inválido');
     }
